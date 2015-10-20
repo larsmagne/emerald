@@ -1,0 +1,71 @@
+body {
+  background: linear-gradient(to bottom, #f05050 0%, #903030 100%);
+  font-family: arial, sans-serif;
+  text: black;
+}
+table.main {
+  margin: auto;
+  width: 1000px;
+  height: 100%;
+}
+table.main td {
+  background: white;
+  border-radius: 5px;
+  padding: 10px;
+  background: linear-gradient(to bottom, white 0%, #e0e0e0 100%);
+}
+td#publisher {
+  height: 40px;
+}
+td#title {
+  height: 80px;
+  font-size: larger;
+  font-weight: bold;
+}
+td#creators {
+  height: 80px;
+}
+tr.misc {
+  height: 40px;
+}
+tr.misc td {
+  text-align: right;
+}
+td#variants {
+  height: 150px;
+}
+td#cover {
+  width: 400px;
+  text-align: center;
+}
+td#cover img {
+  text-align: center;
+}
+
+td#options {
+  width: 150px;
+  word-wrap: none;
+}
+
+tr {
+  vertical-align: top;
+}
+
+table.actions {
+  height: 100%;
+  width: 100%;
+}
+
+table.actions td {
+  background: #c0c0c0;
+}
+td#next {
+  text-align: center;
+  font-weight: bold;
+  cursor: pointer;
+}
+td#prev {
+  text-align: center;
+  font-weight: bold;
+  cursor: pointer;
+}
