@@ -105,6 +105,12 @@ function addNavigation() {
       gotoNextPublisher();
       break;
 
+    case 13: // RET
+    case 66: // b
+      $("#buy")[0].checked = ! $("#buy")[0].checked;
+      toggleBuy();
+      break;
+      
     default:
       return; // exit this handler for other keys
     }
