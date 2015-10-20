@@ -17,6 +17,7 @@ function startUp() {
 	loadImageAndDisplay(data[20]);
       addNavigation();
       checkCategories();
+      addPublishers();
     }});
 }
 
@@ -361,4 +362,21 @@ function displayVariant(code) {
   var comic = comics[currentIndex(code)];
   if (comic.img)
     $("#cover").html("<img src='" + comic.img + "' width=380>");
+}
+
+function addPublishers() {
+  var publishers = [];
+  var len = comics.length;
+  var prev = false;
+  var $select = $("#publishers");
+  for (var i = 0; i < len; i++) {
+    if (comics[i].publisher != prev) {
+      prev = comics[i].publisher;
+      publishers[prev] = i;
+      $select.append("<option>" + prev);
+    }
+  }
+  $select.bind("change", function() {
+    loadImageAndDisplay(comics[publishers[$select.val()]]);
+  });
 }

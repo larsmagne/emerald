@@ -86,3 +86,7 @@ div.variant {
   font-weight: bold;
   cursor: pointer;
 }
+
+select {
+  width: 120px;
+}
