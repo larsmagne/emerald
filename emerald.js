@@ -41,7 +41,6 @@ function display(elem, image) {
   $("#title").html(elem.name);
   $("#creators").html(elem.creators || "");
   $("#text").html(elem.text || "");
-  $("#variants").html(elem.variants || "");
   $("#price").html(elem.price);
   $("#issue").html(elem.issue || "");
   $("#class").html(elem["class"] || "");
@@ -53,6 +52,9 @@ function display(elem, image) {
     $("#issue").addClass("first");
   else
     $("#issue").removeClass("first");
+
+  $("#variant-comics").empty();
+  displayVariants();
   
   setBuy();
   preload();
@@ -318,4 +320,32 @@ function exportBuys() {
       comic.name + "<br>";
   });
   colorbox(html);
+}
+
+function displayVariants() {
+  var i = currentIndex();
+  var title = comics[i].title;
+  if (! title)
+    return;
+  while (++i < comics.length &&
+	 comics[i].title == title &&
+	 comics[i].variant) {
+    var div = document.createElement("div");
+    div.innerHTML = comics[i].name;
+    div.className = "variant";
+    $("#variant-comics").append(div);
+    var func = function() {
+      var code = comics[i].code;
+      $(div).bind("click", function() {
+	displayVariant(code);
+      });
+    };
+    func();
+  }
+}
+
+function displayVariant(code) {
+  var comic = comics[currentIndex(code)];
+  console.log(comic);
+  $("#cover").html("<img src='" + comic.img + "' width=380>");
 }
