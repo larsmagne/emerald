@@ -43,10 +43,8 @@ function display(elem, image, noPush) {
       sep = "&";
     url = url + sep + "code=" + elem.code;
   }
-  if (! noPush) {
-    console.log("pushing " + elem.code);
+  if (! noPush)
     window.history.pushState(elem.code, elem.name, url);
-  }
   $("#cover").empty();
   if (image) {
     $("#cover").append(image);
@@ -93,7 +91,7 @@ function loadImageAndDisplay(elem, noPush) {
     display(elem, false, noPush);
   };
   image.src = elem.img;
-  image.style.width = "380px";
+  image.style.width = "480px";
   image.style.display = "none";
   document.body.appendChild(image);
 }
@@ -140,7 +138,6 @@ function addNavigation() {
   });
   $("#export").bind("click", exportBuys);
   window.addEventListener('popstate', function(e) {
-    console.log(e.state);
     loadImageAndDisplay(comics[currentIndex(e.state)], true);
   });
 }
@@ -250,7 +247,7 @@ function preloadImage(comic) {
   };
   image.src = comic.img;
   image.style.display = "none";
-  image.style.width = "380px";
+  image.style.width = "480px";
   document.body.appendChild(image);
 }
 
