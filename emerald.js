@@ -35,7 +35,7 @@ function display(elem, image) {
   $("#cover").empty();
   if (image) {
     $("#cover").append(image);
-    image.style.display = "block";
+    image.style.display = "inline";
   }
   $("#publisher").html(elem.publisher);
   $("#title").html(elem.name);
@@ -86,18 +86,22 @@ function addNavigation() {
   $(document).keydown(function(e) {
     switch(e.which) {
     case 38: // up
+      $("#explanation").remove();
       gotoPrev();
       break;
 
     case 40: // down
+      $("#explanation").remove();
       gotoNext();
       break;
 
     case 33: // pgup
+      $("#explanation").remove();
       gotoPrevPublisher();
       break;
 
     case 34: // pgdown
+      $("#explanation").remove();
       gotoNextPublisher();
       break;
 

@@ -7,6 +7,7 @@ table.main {
   margin: auto;
   width: 1000px;
   height: 100%;
+  table-layout: fixed;
 }
 table.main td {
   background: white;
@@ -39,9 +40,6 @@ td#variants {
 }
 td#cover {
   width: 400px;
-  text-align: center;
-}
-td#cover img {
   text-align: center;
 }
 
