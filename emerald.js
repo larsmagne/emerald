@@ -5,6 +5,17 @@ var categories = ["variants", "resolicitations", "relistings", "other"];
 var activeCategories = false;
 
 function startUp() {
+  var match = window.location.href.match("month=([-0-9]+)");
+  if (match)
+    emeraldDate = match[1];
+  else {
+    var sep = "?";
+    var url = window.location.href;
+    if (url.match("[?]"))
+      sep = "&";
+    url = url + sep + "month=" + emeraldDate;
+    window.history.pushState("emerald", "emerald", url);
+  }
   $.ajax({
     url: "data/previews-" + emeraldDate + ".json",
     dataType: "json",
@@ -14,7 +25,7 @@ function startUp() {
       if (match)
 	loadImageAndDisplay(data[currentIndex(match[1])]);
       else
-	loadImageAndDisplay(data[20]);
+	loadImageAndDisplay(data[0]);
       addNavigation();
       checkCategories();
       addPublishers();
