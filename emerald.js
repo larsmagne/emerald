@@ -359,6 +359,6 @@ function displayVariants() {
 
 function displayVariant(code) {
   var comic = comics[currentIndex(code)];
-  console.log(comic);
-  $("#cover").html("<img src='" + comic.img + "' width=380>");
+  if (comic.img)
+    $("#cover").html("<img src='" + comic.img + "' width=380>");
 }
