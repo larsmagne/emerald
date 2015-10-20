@@ -28,9 +28,10 @@ td#creators {
 }
 tr.misc {
   height: 40px;
+  vertical-align: middle;
 }
 tr.misc td {
-  text-align: right;
+  text-align: center;
 }
 td#text {
   height: 300px;
