@@ -47,6 +47,9 @@ function display(elem, image) {
   $("#date").html(elem.date || "");
   $("#original").html(elem.original || "");
   $("#code").html(elem.code);
+  $("#limited").html(elem.duration? "" + elem.duration + " issue series": "");
+  $("#mature").html(elem.mature? "mature readers": "");
+  $("#comething").html(elem.comething || "");
 
   if (elem.issue == "#1")
     $("#issue").addClass("first");
