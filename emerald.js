@@ -1,19 +1,37 @@
 var current = false;
 var comics = false;
+var emeraldDate = "2015-10";
+var categories = ["variants", "resolicitations", "relistings", "other"];
+var activeCategories = false;
 
 function startUp() {
   $.ajax({
-    url: "data/previews-2015-10.json",
+    url: "data/previews-" + emeraldDate + ".json",
     dataType: "json",
     success: function(data) {
       comics = data;
-      loadImageAndDisplay(data[20]);
+      var match = window.location.href.match("code=(.*)");
+      if (match)
+	loadImageAndDisplay(data[currentIndex(match[1])]);
+      else
+	loadImageAndDisplay(data[20]);
       addNavigation();
+      checkCategories();
     }});
 }
 
 function display(elem, image) {
   current = elem.code;
+  var url = window.location.href;
+  if (url.match("code=(.*)"))
+    url = url.replace(/code=(.*)/, "code=" + elem.code);
+  else {
+    var sep = "?";
+    if (url.match("[?]"))
+      sep = "&";
+    url = url + sep + "code=" + elem.code;
+  }
+  window.history.pushState(elem.code, elem.name, url);
   $("#cover").empty();
   if (image) {
     $("#cover").append(image);
@@ -21,19 +39,30 @@ function display(elem, image) {
   }
   $("#publisher").html(elem.publisher);
   $("#title").html(elem.name);
-  $("#creators").html(elem.creators);
-  $("#text").html(elem.text);
-  $("#variants").html(elem.variants);
+  $("#creators").html(elem.creators || "");
+  $("#text").html(elem.text || "");
+  $("#variants").html(elem.variants || "");
   $("#price").html(elem.price);
-  $("#issue").html(elem.issue);
-  $("#class").html(elem["class"]);
-  $("#date").html(elem.date);
-  $("#original").html(elem.original);
+  $("#issue").html(elem.issue || "");
+  $("#class").html(elem["class"] || "");
+  $("#date").html(elem.date || "");
+  $("#original").html(elem.original || "");
   $("#code").html(elem.code);
+
+  if (elem.issue == "#1")
+    $("#issue").addClass("first");
+  else
+    $("#issue").removeClass("first");
+  
+  setBuy();
   preload();
 }
 
 function loadImageAndDisplay(elem) {
+  if (! elem.img) {
+    display(elem, false);
+    return;
+  }
   var image = document.createElement("img");
   image.onload = function() {
     $(image).remove();
@@ -75,12 +104,19 @@ function addNavigation() {
     }
     e.preventDefault(); // prevent the default action (scroll / move caret)
   });
+  $("#buy").bind("change", toggleBuy);
+  $.map(categories, function(cat) {
+    $("#" + cat).bind("change", changeCategory);
+  });
+  $("#export").bind("click", exportBuys);
 }
 
-function currentIndex() {
+function currentIndex(code) {
+  if (! code)
+    code = current;
   var len = comics.length;
   for (var i = 0; i < len; i++) {
-    if (comics[i]["code"] == current)
+    if (comics[i]["code"] == code)
       return i;
   }
   return 0;
@@ -155,6 +191,21 @@ function preload() {
 }
 
 function wanted(comic) {
+  if ($.inArray("variants", activeCategories) == -1 &&
+      comic.variant) {
+    return false;
+  }
+  if ($.inArray("resolicitations", activeCategories) == -1 &&
+      comic.resolicited)
+    return false;
+  if ($.inArray("relistings", activeCategories) == -1 &&
+      comic.original)
+    return false;
+  if ($.inArray("other", activeCategories) == -1 &&
+      ! comic.variant &&
+      ! comic.resolicited &&
+      ! comic.original)
+    return false;
   return true;
 }
 
@@ -167,4 +218,104 @@ function preloadImage(comic) {
   image.style.display = "none";
   image.style.width = "380px";
   document.body.appendChild(image);
+}
+
+function toggleBuy() {
+  var name = "buys-" + emeraldDate;
+  var buys = localStorage.getItem(name);
+  if (! buys)
+    buys = "";
+  if ($("#buy")[0].checked) {
+    if (buys.length)
+      buys += ",";
+    buys += current;
+  } else {
+    buys = buys.replace(new RegExp(",?" + current, "g"), "");
+  }
+  localStorage.setItem(name, buys);
+  setBuyColor();
+}
+
+function setBuy() {
+  var name = "buys-" + emeraldDate;
+  var buys = localStorage.getItem(name);
+  if (! buys)
+    buys = "";
+  if (buys.match(new RegExp(current)))
+    $("#buy")[0].checked = true;
+  else
+    $("#buy")[0].checked = false;
+  setBuyColor();
+}
+
+function setBuyColor() {
+  if ($("#buy")[0].checked)
+    $("#buy-td").css({background: "#50c050"});
+  else
+    $("#buy-td").css({background: "#c0c0c0"});
+}
+
+function changeCategory() {
+  var cats = false;
+  $.map(categories, function(cat) {
+    if ($("#" + cat)[0].checked) {
+      if (cats)
+	cats += "," + cat;
+      else
+	cats = cat;
+    }
+  });
+  localStorage.setItem("categories", cats);
+  if (cats)
+    activeCategories = cats.split(",");
+  else
+    activeCategories = [];
+  return false;
+}
+
+function checkCategories () {
+  var cats = localStorage.getItem("categories");
+  $.map(categories, function(cat) {
+    if (cats === null || cats.match(new RegExp(cat)))
+      $("#" + cat)[0].checked = true;
+  });
+  changeCategory();
+}
+
+function colorbox(html) {
+  var box = document.createElement("div");
+  box.style.position = "absolute";
+  box.style.left = "0px";
+  box.style.top = $(window).scrollTop() + "px";
+  box.style.height = $(window).height() + "px";
+  box.style.width = $(window).width() + "px";
+  box.style.display = "block";
+  box.style.background = "#f0f0f0";
+  box.style.color = "black";
+  box.style.padding = "100px";
+  box.className = "event-lightbox";
+  box.innerHTML = html;
+  $(box).bind("click", function() {
+    $(box).remove();
+    return false;
+  });
+  document.body.appendChild(box);
+}
+
+function exportBuys() {
+  var name = "buys-" + emeraldDate;
+  var buys = localStorage.getItem(name);
+  if (! buys) {
+    colorbox("Nothing marked for buying");
+    return;
+  }
+  var html = "";
+  $.map(buys.split(","), function(code) {
+    if (! code)
+      return;
+    var comic = comics[currentIndex(code)];
+    html += code + " (" + comic.publisher + ") " +
+      comic.name + "<br>";
+  });
+  colorbox(html);
 }

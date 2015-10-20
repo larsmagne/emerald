@@ -32,7 +32,7 @@ tr.misc td {
   text-align: right;
 }
 td#text {
-  height: 250px;
+  height: 300px;
 }
 td#variants {
   height: 150px;
@@ -71,4 +71,14 @@ td#prev {
   text-align: center;
   font-weight: bold;
   cursor: pointer;
+}
+
+td#export {
+  text-align: center;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+td.first {
+  background: #40a040 !important;
 }
