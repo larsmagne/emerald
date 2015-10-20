@@ -362,18 +362,13 @@ function displayVariants() {
     var func = function() {
       var code = comics[i].code;
       $(div).bind("click", function() {
-	displayVariant(code);
+	loadImageAndDisplay(comics[currentIndex(code)]);
       });
     };
     func();
   }
 }
 
-function displayVariant(code) {
-  var comic = comics[currentIndex(code)];
-  if (comic.img)
-    $("#cover").html("<img src='" + comic.img + "' width=380>");
-}
 
 function addPublishers() {
   var publishers = [];
