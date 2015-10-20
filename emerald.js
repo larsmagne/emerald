@@ -378,5 +378,6 @@ function addPublishers() {
   }
   $select.bind("change", function() {
     loadImageAndDisplay(comics[publishers[$select.val()]]);
+    $select.blur();
   });
 }
