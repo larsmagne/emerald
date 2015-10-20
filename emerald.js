@@ -32,7 +32,7 @@ function startUp() {
     }});
 }
 
-function display(elem, image) {
+function display(elem, image, noPush) {
   current = elem.code;
   var url = window.location.href;
   if (url.match("code=(.*)"))
@@ -43,7 +43,10 @@ function display(elem, image) {
       sep = "&";
     url = url + sep + "code=" + elem.code;
   }
-  window.history.pushState(elem.code, elem.name, url);
+  if (! noPush) {
+    console.log("pushing " + elem.code);
+    window.history.pushState(elem.code, elem.name, url);
+  }
   $("#cover").empty();
   if (image) {
     $("#cover").append(image);
@@ -75,7 +78,7 @@ function display(elem, image) {
   preload();
 }
 
-function loadImageAndDisplay(elem) {
+function loadImageAndDisplay(elem, noPush) {
   if (! elem.img) {
     display(elem, false);
     return;
@@ -83,11 +86,11 @@ function loadImageAndDisplay(elem) {
   var image = document.createElement("img");
   image.onload = function() {
     $(image).remove();
-    display(elem, image);
+    display(elem, image, noPush);
   };
   image.onerror = function() {
     $(image).remove();
-    display(elem, false);
+    display(elem, false, noPush);
   };
   image.src = elem.img;
   image.style.width = "380px";
@@ -136,6 +139,10 @@ function addNavigation() {
     $("#" + cat).bind("change", changeCategory);
   });
   $("#export").bind("click", exportBuys);
+  window.addEventListener('popstate', function(e) {
+    console.log(e.state);
+    loadImageAndDisplay(comics[currentIndex(e.state)], true);
+  });
 }
 
 function currentIndex(code) {
