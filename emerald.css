@@ -31,6 +31,9 @@ tr.misc {
 tr.misc td {
   text-align: right;
 }
+td#text {
+  height: 250px;
+}
 td#variants {
   height: 150px;
 }
