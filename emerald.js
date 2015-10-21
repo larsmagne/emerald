@@ -205,7 +205,10 @@ function gotoPrevPublisher() {
       publisher = comics[i].publisher;
       while (--i > 0) {
 	if (wanted(comics[i]) && publisher != comics[i].publisher) {
-	  loadImageAndDisplay(comics[i + 1]);
+	  i++;
+	  while (! wanted(comics[i]) && i < comics.length)
+	    i++;
+	  loadImageAndDisplay(comics[i]);
 	  return;
 	}
       }
@@ -421,8 +424,8 @@ function addMonths() {
 		   " " + match[0]);
   }
   $select.bind("change", function() {
+    $select.blur();
     var url = window.location.href.replace(/[?].*/, "");
     window.location.href = url + "?month=" + $select.val();
-    return false;
   });
 }
