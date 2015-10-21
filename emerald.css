@@ -89,8 +89,11 @@ div.variant {
   cursor: pointer;
 }
 
+td.select {
+  text-align: center;
+}
 select {
-  width: 120px;
+  width: 160px;
 }
 td.first-publisher {
   font-weight: bold;
