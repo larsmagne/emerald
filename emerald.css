@@ -94,3 +94,6 @@ select {
 td.first-publisher {
   font-weight: bold;
 }
+input[type=checkbox] {
+  margin-right: 1ex;
+}
