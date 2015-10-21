@@ -332,12 +332,11 @@ function colorbox(html) {
   box.style.color = "black";
   box.style.padding = "100px";
   box.className = "event-lightbox";
-  box.innerHTML = html;
-  $(box).bind("click", function() {
-    $(box).remove();
-    return false;
-  });
+  box.innerHTML = html + "<div class='close'><span>Close</span></div>";
   document.body.appendChild(box);
+  $(".close").bind("click", function() {
+    $(box).remove();
+  });
 }
 
 function exportBuys() {
