@@ -1,6 +1,6 @@
 var current = false;
 var comics = false;
-var emeraldDate = "2015-10";
+var emeraldDate = false;
 var categories = ["variants", "resolicitations", "relistings", "other"];
 var activeCategories = false;
 

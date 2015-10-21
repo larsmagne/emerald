@@ -17,14 +17,15 @@ table.main td {
 }
 td#publisher {
   height: 40px;
+  vertical-align: middle;
 }
 td#title {
-  height: 80px;
+  height: 70px;
   font-size: larger;
   font-weight: bold;
 }
 td#creators {
-  height: 80px;
+  height: 70px;
 }
 tr.misc {
   height: 40px;
