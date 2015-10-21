@@ -32,7 +32,7 @@ function startUp() {
     }});
 }
 
-function display(elem, image, noPush) {
+function display(elem, image, noPush, noVariants) {
   current = elem.code;
   var url = window.location.href;
   if (url.match("code=(.*)"))
@@ -74,14 +74,16 @@ function display(elem, image, noPush) {
   else
     $("#issue").removeClass("first");
 
-  $("#variant-comics").empty();
-  displayVariants();
+  if (! noVariants) {
+    $("#variant-comics").empty();
+    displayVariants();
+  }
   
   setBuy();
   preload();
 }
 
-function loadImageAndDisplay(elem, noPush) {
+function loadImageAndDisplay(elem, noPush, noVariants) {
   if (! elem.img) {
     display(elem, false);
     return;
@@ -89,11 +91,11 @@ function loadImageAndDisplay(elem, noPush) {
   var image = document.createElement("img");
   image.onload = function() {
     $(image).remove();
-    display(elem, image, noPush);
+    display(elem, image, noPush, noVariants);
   };
   image.onerror = function() {
     $(image).remove();
-    display(elem, false, noPush);
+    display(elem, false, noPush, noVariants);
   };
   image.src = elem.img;
   image.style.width = "480px";
@@ -372,7 +374,7 @@ function displayVariants() {
     var func = function() {
       var code = comics[i].code;
       $(div).bind("click", function() {
-	loadImageAndDisplay(comics[currentIndex(code)]);
+	loadImageAndDisplay(comics[currentIndex(code)], false, true);
       });
     };
     func();
