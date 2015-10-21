@@ -92,7 +92,6 @@ function loadImageAndDisplay(elem, noPush, noVariants) {
   }
   var image = document.createElement("img");
   image.onload = function() {
-    $(image).remove();
     display(elem, image, noPush, noVariants);
   };
   image.onerror = function() {
@@ -102,7 +101,6 @@ function loadImageAndDisplay(elem, noPush, noVariants) {
   image.src = elem.img;
   image.style.width = "480px";
   image.style.display = "none";
-  document.body.appendChild(image);
 }
 
 function addNavigation() {
@@ -258,13 +256,9 @@ function wanted(comic) {
 
 function preloadImage(comic) {
   var image = document.createElement("img");
-  image.onload = function() {
-    $(image).remove();
-  };
   image.src = comic.img;
   image.style.display = "none";
   image.style.width = "480px";
-  document.body.appendChild(image);
 }
 
 function toggleBuy() {
