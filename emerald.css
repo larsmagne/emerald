@@ -5,7 +5,7 @@ body {
 }
 table.main {
   margin: auto;
-  width: 1100px;
+  width: 1200px;
   height: 100%;
   table-layout: fixed;
 }
@@ -46,7 +46,7 @@ td#cover {
 }
 
 td#options {
-  width: 150px;
+  width: 200px;
   word-wrap: none;
 }
 
