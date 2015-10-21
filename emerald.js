@@ -316,7 +316,8 @@ function changeCategory() {
 function checkCategories () {
   var cats = localStorage.getItem("categories");
   $.map(categories, function(cat) {
-    if (cats === null || cats.match(new RegExp(cat)))
+    if ((cats === null && cat != "variants") ||
+	cats.match(new RegExp(cat)))
       $("#" + cat)[0].checked = true;
   });
   changeCategory();
