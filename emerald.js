@@ -111,22 +111,22 @@ function addNavigation() {
   $(document).keydown(function(e) {
     switch(e.which) {
     case 38: // up
-      $("#explanation").remove();
+      removeExplanation();
       gotoPrev();
       break;
 
     case 40: // down
-      $("#explanation").remove();
+      removeExplanation();
       gotoNext();
       break;
 
     case 33: // pgup
-      $("#explanation").remove();
+      removeExplanation();
       gotoPrevPublisher();
       break;
 
     case 34: // pgdown
-      $("#explanation").remove();
+      removeExplanation();
       gotoNextPublisher();
       break;
 
@@ -149,6 +149,8 @@ function addNavigation() {
   window.addEventListener('popstate', function(e) {
     loadImageAndDisplay(comics[currentIndex(e.state)], true);
   });
+  if (localStorage.getItem("explanation"))
+    removeExplanation();
 }
 
 function currentIndex(code) {
@@ -428,4 +430,9 @@ function addMonths() {
     var url = window.location.href.replace(/[?].*/, "");
     window.location.href = url + "?month=" + $select.val();
   });
+}
+
+function removeExplanation() {
+  $("#explanation").remove();
+  localStorage.setItem("explanation", "true");
 }
