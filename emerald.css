@@ -91,3 +91,6 @@ div.variant {
 select {
   width: 120px;
 }
+td.first-publisher {
+  font-weight: bold;
+}

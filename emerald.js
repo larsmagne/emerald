@@ -50,7 +50,12 @@ function display(elem, image, noPush) {
     $("#cover").append(image);
     image.style.display = "inline";
   }
+  var old = $("#publisher").html();
   $("#publisher").html(elem.publisher);
+  if (old && $("#publisher").html() != old)
+    $("#publisher").addClass("first-publisher");
+  else
+    $("#publisher").removeClass("first-publisher");
   $("#title").html(elem.name);
   $("#creators").html(elem.creators || "");
   $("#text").html(elem.text || "");
@@ -222,6 +227,8 @@ function preload() {
 }
 
 function wanted(comic) {
+  if (! comic)
+    return false;
   if ($.inArray("variants", activeCategories) == -1 &&
       comic.variant) {
     return false;
