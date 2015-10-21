@@ -122,3 +122,14 @@ div.close span {
   padding: 10px;
   border-radius: 5px;
 }
+
+td#logo {
+  text-align: right;
+  vertical-align: bottom;
+}
+
+input[type=checkbox] {
+  vertical-align: middle;
+  position: relative;
+  bottom: 1px;
+}
