@@ -87,7 +87,7 @@ function display(elem, image, noPush, noVariants) {
 
 function loadImageAndDisplay(elem, noPush, noVariants) {
   if (! elem.img) {
-    display(elem, false);
+    display(elem, false, noPush, noVariants);
     return;
   }
   var image = document.createElement("img");
