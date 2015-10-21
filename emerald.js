@@ -1,6 +1,7 @@
 var current = false;
 var comics = false;
 var emeraldDate = false;
+var emeraldDates = false;
 var categories = ["variants", "resolicitations", "relistings", "other"];
 var activeCategories = false;
 
@@ -29,6 +30,7 @@ function startUp() {
       addNavigation();
       checkCategories();
       addPublishers();
+      addMonths();
     }});
 }
 
@@ -315,8 +317,10 @@ function changeCategory() {
 
 function checkCategories () {
   var cats = localStorage.getItem("categories");
+  if (cats == null)
+    cats = "";
   $.map(categories, function(cat) {
-    if ((cats === null && cat != "variants") ||
+    if ((cats == "" && cat != "variants") ||
 	cats.match(new RegExp(cat)))
       $("#" + cat)[0].checked = true;
   });
@@ -398,5 +402,27 @@ function addPublishers() {
   $select.bind("change", function() {
     loadImageAndDisplay(comics[publishers[$select.val()]]);
     $select.blur();
+  });
+}
+
+function addMonths() {
+  var $select = $("#months");
+  var monthNames = ["January", "February", "March", "April", "May", "June",
+		    "July", "August", "September", "October", "November",
+		    "December"];
+  for (var i = 0; i < emeraldDates.length; i++) {
+    var month = emeraldDates[i];
+    var match = month.split("-");
+    var selected = "";
+    if (emeraldDates[i] == emeraldDate)
+      selected = " selected";
+    $select.append("<option value='" + month + "'" + selected + ">" +
+		   monthNames[parseInt(match[1]) - 1] +
+		   " " + match[0]);
+  }
+  $select.bind("change", function() {
+    var url = window.location.href.replace(/[?].*/, "");
+    window.location.href = url + "?month=" + $select.val();
+    return false;
   });
 }
