@@ -257,6 +257,8 @@ function wanted(comic) {
 }
 
 function preloadImage(comic) {
+  if (! comic)
+    return;
   var image = document.createElement("img");
   image.src = comic.img;
   image.style.display = "none";
