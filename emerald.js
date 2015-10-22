@@ -106,6 +106,8 @@ function loadImageAndDisplay(elem, noPush, noVariants) {
 function addNavigation() {
   $("#next").bind("click", gotoNext);
   $("#prev").bind("click", gotoPrev);
+  $("#nextPublisher").bind("click", gotoNextPublisher);
+  $("#prevPublisher").bind("click", gotoPrevPublisher);
   $(document).keydown(function(e) {
     switch(e.which) {
     case 38: // up

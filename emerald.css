@@ -62,12 +62,7 @@ table.actions {
 table.actions td {
   background: #c0c0c0;
 }
-td#next {
-  text-align: center;
-  font-weight: bold;
-  cursor: pointer;
-}
-td#prev {
+td.navigation {
   text-align: center;
   font-weight: bold;
   cursor: pointer;
