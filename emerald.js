@@ -2,7 +2,8 @@ var current = false;
 var comics = false;
 var emeraldDate = false;
 var emeraldDates = false;
-var categories = ["variants", "resolicitations", "relistings", "other"];
+var categories = ["variants", "resolicitations", "relistings", "gns",
+		  "other"];
 var activeCategories = false;
 
 function startUp() {
@@ -248,10 +249,14 @@ function wanted(comic) {
   if ($.inArray("relistings", activeCategories) == -1 &&
       comic.original)
     return false;
+  if ($.inArray("gns", activeCategories) == -1 &&
+      comic.binding)
+    return false;
   if ($.inArray("other", activeCategories) == -1 &&
       ! comic.variant &&
       ! comic.resolicited &&
-      ! comic.original)
+      ! comic.original &&
+      ! comic.binding)
     return false;
   return true;
 }
