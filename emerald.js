@@ -249,7 +249,7 @@ function wanted(comic) {
       comic.resolicited)
     return false;
   if ($.inArray("relistings", activeCategories) == -1 &&
-      comic.original)
+      (comic.original || comic["class"] == "SS" || comic["class"] == "OA"))
     return false;
   if ($.inArray("gns", activeCategories) == -1 &&
       comic.binding)
