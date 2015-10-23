@@ -29,50 +29,50 @@ function startUp() {
       else
 	loadImageAndDisplay(data[0]);
       addNavigation();
-      checkCategories();
       addPublishers();
+      checkCategories();
       addMonths();
     }});
 }
 
-function display(elem, image, noPush, noVariants) {
-  current = elem.code;
+function display(comic, image, noPush, noVariants) {
+  current = comic.code;
   var url = window.location.href;
   if (url.match("code=(.*)"))
-    url = url.replace(/code=(.*)/, "code=" + elem.code);
+    url = url.replace(/code=(.*)/, "code=" + comic.code);
   else {
     var sep = "?";
     if (url.match("[?]"))
       sep = "&";
-    url = url + sep + "code=" + elem.code;
+    url = url + sep + "code=" + comic.code;
   }
   if (! noPush)
-    window.history.pushState(elem.code, elem.name, url);
+    window.history.pushState(comic.code, comic.name, url);
   $("#cover").empty();
   if (image) {
     $("#cover").append(image);
     image.style.display = "inline";
   }
   var old = $("#publisher").html();
-  $("#publisher").html(elem.publisher);
+  $("#publisher").html(comic.publisher);
   if (old && $("#publisher").html() != old)
     $("#publisher").addClass("first-publisher");
   else
     $("#publisher").removeClass("first-publisher");
-  $("#title").html(elem.name);
-  $("#creators").html(elem.creators || "");
-  $("#text").html(elem.text || "");
-  $("#price").html(elem.price);
-  $("#issue").html(elem.issue || "");
-  $("#class").html(elem["class"] || "");
-  $("#date").html(elem.date || "");
-  $("#original").html(elem.original || "");
-  $("#code").html(elem.code);
-  $("#limited").html(elem.duration? "" + elem.duration + " issue series": "");
-  $("#mature").html(elem.mature? "mature readers": "");
-  $("#comething").html(elem.comething || "");
+  $("#title").html(comic.name);
+  $("#creators").html(comic.creators || "");
+  $("#text").html(comic.text || "");
+  $("#price").html(comic.price);
+  $("#issue").html(comic.issue || "");
+  $("#class").html(comic["class"] || "");
+  $("#date").html(comic.date || "");
+  $("#original").html(comic.original || "");
+  $("#code").html(comic.code);
+  $("#limited").html(comic.duration? "" + comic.duration + " issue series": "");
+  $("#mature").html(comic.mature? "mature readers": "");
+  $("#comething").html(comic.comething || "");
 
-  if (elem.issue == "#1")
+  if (comic.issue == "#1")
     $("#issue").addClass("first");
   else
     $("#issue").removeClass("first");
@@ -81,25 +81,27 @@ function display(elem, image, noPush, noVariants) {
     $("#variant-comics").empty();
     displayVariants();
   }
+
+  $("#publishers").val(comic.publisher);
   
   setBuy();
   preload();
 }
 
-function loadImageAndDisplay(elem, noPush, noVariants) {
-  if (! elem.img) {
-    display(elem, false, noPush, noVariants);
+function loadImageAndDisplay(comic, noPush, noVariants) {
+  if (! comic.img) {
+    display(comic, false, noPush, noVariants);
     return;
   }
   var image = document.createElement("img");
   image.onload = function() {
-    display(elem, image, noPush, noVariants);
+    display(comic, image, noPush, noVariants);
   };
   image.onerror = function() {
     $(image).remove();
-    display(elem, false, noPush, noVariants);
+    display(comic, false, noPush, noVariants);
   };
-  image.src = elem.img;
+  image.src = comic.img;
   image.style.width = "480px";
   image.style.display = "none";
 }
@@ -320,6 +322,7 @@ function changeCategory() {
     activeCategories = cats.split(",");
   else
     activeCategories = [];
+  disablePublishers();
   return false;
 }
 
@@ -404,11 +407,14 @@ function addPublishers() {
     if (comics[i].publisher != prev) {
       prev = comics[i].publisher;
       publishers[prev] = i;
-      $select.append("<option>" + prev);
+      $select.append("<option value='" + prev + "'>" + prev);
     }
   }
   $select.bind("change", function() {
-    loadImageAndDisplay(comics[publishers[$select.val()]]);
+    var i = publishers[$select.val()];
+    while (comics[i] && ! wanted(comics[i]))
+      i++;
+    loadImageAndDisplay(comics[i]);
     $select.blur();
   });
 }
@@ -438,4 +444,29 @@ function addMonths() {
 function removeExplanation() {
   $("#explanation").remove();
   localStorage.setItem("explanation", "true");
+}
+
+function disablePublishers() {
+  var $select = $("#publishers");
+  var prev;
+  var want = false;
+  for (var i = 0; i < comics.length; i++) {
+    var comic = comics[i];
+    if (prev && prev != comic.publisher) {
+      disablePublisher(prev, $select, want);
+      want = false;
+    }
+    prev = comic.publisher;
+    if (wanted(comic))
+      want = true;
+  }
+  disablePublisher(prev, $select, want);
+}
+
+function disablePublisher(publisher, $select, want) {
+  var $option = $select.find("option[value='" + publisher + "']");
+  if (want)
+    $option.removeAttr("disabled");
+  else
+    $option.attr("disabled", true);
 }
