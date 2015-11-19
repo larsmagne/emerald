@@ -267,9 +267,14 @@ function preloadImage(comic) {
   if (! comic || ! comic.img)
     return;
   var image = document.createElement("img");
+  image.onload = function() {
+    $(image).remove();
+  };
   image.src = comic.img;
   image.style.display = "none";
   image.style.width = "480px";
+  image.style.display = "none";
+  document.body.appendChild(image);
 }
 
 function toggleBuy() {
