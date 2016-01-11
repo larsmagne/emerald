@@ -48,10 +48,23 @@ function display(comic, image, noPush, noVariants) {
   }
   if (! noPush)
     window.history.pushState(comic.code, comic.name, url);
-  $("#cover").empty();
   if (image) {
+    var children = $("#cover").children();
+    image.style.position = "absolute";
+    image.style.top = "20px";
+    image.style.left = "20px";
     $("#cover").append(image);
     image.style.display = "inline";
+    setTimeout(function() {
+      $.map(children, function(elem) {
+	$(elem).fadeOut(100, function() {
+	  $(elem).remove();
+	});
+      });
+    },
+	       100);
+  } else {
+    $("#cover").empty();
   }
   var old = $("#publisher").html();
   $("#publisher").html(comic.publisher);
