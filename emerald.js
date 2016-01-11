@@ -264,6 +264,12 @@ function wanted(comic) {
     if (comic.issue == "#1" || comic.issue == "01")
       return true;
     else {
+      if ($.inArray("resolicitations", activeCategories) == -1 &&
+	  comic.resolicited)
+	return false;
+      if ($.inArray("relistings", activeCategories) == -1 &&
+	  (comic.original || comic["class"] == "SS" || comic["class"] == "OA"))
+	return false;
       if ($.inArray("gns", activeCategories) != -1 &&
 	  comic.binding)
 	return true;
