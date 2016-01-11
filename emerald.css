@@ -43,6 +43,7 @@ td#variants {
 td#cover {
   width: 500px;
   text-align: center;
+  position: relative;
 }
 
 td#options {

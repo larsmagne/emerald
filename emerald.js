@@ -2,8 +2,8 @@ var current = false;
 var comics = false;
 var emeraldDate = false;
 var emeraldDates = false;
-var categories = ["variants", "resolicitations", "relistings", "gns",
-		  "other"];
+var categories = ["variants", "resolicitations", "relistings",
+		  "ones", "gns", "other"];
 var activeCategories = false;
 
 function startUp() {
@@ -255,9 +255,23 @@ function wanted(comic) {
   if (! comic)
     return false;
   if ($.inArray("variants", activeCategories) == -1 &&
-      comic.variant) {
+      comic.variant)
     return false;
+
+  // This is rather confused logic, but I wanted the "list first
+  // issues and graphic novels" logic, which is what I want...
+  if ($.inArray("ones", activeCategories) != -1) {
+    if (comic.issue == "#1" || comic.issue == "01")
+      return true;
+    else {
+      if ($.inArray("gns", activeCategories) != -1 &&
+	  comic.binding)
+	return true;
+      else if ($.inArray("other", activeCategories) == -1)
+	return false;
+    }
   }
+  
   if ($.inArray("resolicitations", activeCategories) == -1 &&
       comic.resolicited)
     return false;
