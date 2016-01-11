@@ -85,7 +85,7 @@ function display(comic, image, noPush, noVariants) {
   $("#mature").html(comic.mature? "mature readers": "");
   $("#comething").html(comic.comething || "");
 
-  if (comic.issue == "#1")
+  if (comic.issue == "#1" || comic.issue == "VOL 01")
     $("#issue").addClass("first");
   else
     $("#issue").removeClass("first");
@@ -261,7 +261,7 @@ function wanted(comic) {
   // This is rather confused logic, but I wanted the "list first
   // issues and graphic novels" logic, which is what I want...
   if ($.inArray("ones", activeCategories) != -1) {
-    if (comic.issue == "#1" || comic.issue == "01")
+    if (comic.issue == "#1" || comic.issue == "VOL 01")
       return true;
     else {
       if ($.inArray("resolicitations", activeCategories) == -1 &&
