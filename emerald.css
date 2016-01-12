@@ -3,6 +3,9 @@ body {
   font-family: arial, sans-serif;
   text: black;
 }
+::-webkit-scrollbar { 
+  display: none; 
+}
 table.main {
   margin: auto;
   width: 1200px;
