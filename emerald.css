@@ -25,6 +25,7 @@ td#title {
   font-weight: bold;
 }
 td#creators {
+  width: 500px;
   height: 70px;
 }
 tr.misc {
