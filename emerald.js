@@ -53,6 +53,13 @@ function display(comic, image, noPush, noVariants) {
     image.style.position = "absolute";
     image.style.top = "20px";
     image.style.left = "20px";
+    // Find out if we need to constrain the height to make things fit.
+    var ratio = image.width / 480;
+    var cHeight = $("#cover").height() - 20;
+    if (image.height / ratio > cHeight) {
+      image.style.width = "";
+      image.style.height = cHeight;
+    }    
     $("#cover").append(image);
     image.style.display = "inline";
     setTimeout(function() {
