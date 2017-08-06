@@ -139,3 +139,26 @@ input[type=checkbox] {
   position: relative;
   bottom: 1px;
 }
+
+td#text {
+  max-height: 300px;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+
+td#text:hover {
+  text-overflow: inherit;
+  overflow: visible;
+}
+
+td#text:after {
+  content: '';
+  display: block;
+  margin-bottom: -10000px;
+}
+
+td#text:hover:after {
+  content: '';
+  display: block;
+  margin-bottom: 0px;
+}
