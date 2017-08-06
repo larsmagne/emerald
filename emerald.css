@@ -82,6 +82,12 @@ td#export {
 td.first {
   background: #40a040 !important;
 }
+td.special-publisher {
+  background: #40a040 !important;
+}
+option.special-publisher {
+  background-color: #40a040 !important;
+}
 
 div.variant {
   display: block;

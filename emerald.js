@@ -22,7 +22,30 @@ function startUp() {
     url: "data/previews-" + emeraldDate + ".json",
     dataType: "json",
     success: function(data) {
-      comics = data;
+      var s = localStorage.getItem("specials");
+      if (! s)
+	var specials = false;
+      else
+	specials = s.split(/,/);
+      comics = data.sort(function(comic1, comic2) {
+	if (! specials)
+	  return 0;
+	var pub1 = comic1.publisher;
+	var pub2 = comic2.publisher;
+	if (specials.indexOf(pub1) == -1 &&
+	    specials.indexOf(pub2) == -1)
+	  return 0;
+	if (specials.indexOf(pub1) != -1 &&
+	    specials.indexOf(pub2) != -1)
+	  return 0;
+	if (specials.indexOf(pub1) != -1 &&
+	    specials.indexOf(pub2) == -1)
+	  return -11;
+	if (specials.indexOf(pub1) == -1 &&
+	    specials.indexOf(pub2) != -1)
+	  return 1;
+	return 0;
+      });
       var match = window.location.href.match("code=(.*)");
       if (match)
 	loadImageAndDisplay(data[currentIndex(match[1])]);
@@ -33,6 +56,9 @@ function startUp() {
       checkCategories();
       addMonths();
     }});
+    $("#publisher").click(function() {
+      toggleSpecialPublisher();
+    });
 }
 
 function display(comic, image, noPush, noVariants) {
@@ -74,11 +100,14 @@ function display(comic, image, noPush, noVariants) {
     $("#cover").empty();
   }
   var old = $("#publisher").html();
-  $("#publisher").html(comic.publisher);
+  var publisher = comic.publisher;
+  $("#publisher").html(publisher);
+  $("#publisher").attr("data-publisher", publisher);
   if (old && $("#publisher").html() != old)
     $("#publisher").addClass("first-publisher");
   else
     $("#publisher").removeClass("first-publisher");
+  setSpecialColor(publisher);
   $("#title").html(comic.name);
   $("#creators").html(comic.creators || "");
   $("#text").html(comic.text || "");
@@ -264,6 +293,8 @@ function wanted(comic) {
   if ($.inArray("variants", activeCategories) == -1 &&
       comic.variant)
     return false;
+  if (specialPublisher(comic.publisher))
+    return true;
 
   // This is rather confused logic, but I wanted the "list first
   // issues and graphic novels" logic, which is what I want...
@@ -514,4 +545,41 @@ function disablePublisher(publisher, $select, want) {
     $option.removeAttr("disabled");
   else
     $option.attr("disabled", true);
+  if (specialPublisher(publisher.replace(",", "")))
+    $option.addClass("special-publisher");
+  else
+    $option.removeClass("special-publisher", true);
+}
+
+// "Special" publishers are publishers we want to see all comics from,
+// and that are sorted first.
+function toggleSpecialPublisher() {
+  var s = localStorage.getItem("specials");
+  if (s)
+    var specials = s.split(/,/);
+  else
+    specials = [];
+  var publisher = $("#publisher").attr("data-publisher");
+  var index = specials.indexOf(publisher);
+  if (index == -1)
+    specials.push(publisher);
+  else
+    specials.splice(index, 1);
+  localStorage.setItem("specials", specials.join(","));
+  setSpecialColor(publisher);
+}
+
+function specialPublisher(publisher) {
+  var specials = localStorage.getItem("specials");
+  if (! specials || specials.split(/,/).indexOf(publisher) == -1)
+    return false;
+  else
+    return true;
+}
+
+function setSpecialColor(publisher) {
+  if (specialPublisher(publisher)) {
+    $("#publisher").addClass("special-publisher");
+  } else
+    $("#publisher").removeClass("special-publisher");
 }
