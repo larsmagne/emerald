@@ -7,6 +7,7 @@ var categories = ["variants", "resolicitations", "relistings",
 var activeCategories = false;
 
 function startUp() {
+  startSpinner();
   var match = window.location.href.match("month=([-0-9]+)");
   if (match)
     emeraldDate = match[1];
@@ -144,15 +145,20 @@ function loadImageAndDisplay(comic, noPush, noVariants) {
   }
   var image = document.createElement("img");
   image.onload = function() {
+    removeSpinner(spinner);
     display(comic, image, noPush, noVariants);
   };
   image.onerror = function() {
+    removeSpinner(spinner);
     $(image).remove();
     display(comic, false, noPush, noVariants);
   };
   image.src = comic.img;
   image.style.width = "480px";
   image.style.display = "none";
+  // Display a spinner image if the image isn't in the cache.
+  if (! image.complete)
+    var spinner = startSpinner();
 }
 
 function addNavigation() {
@@ -582,4 +588,25 @@ function setSpecialColor(publisher) {
     $("#publisher").addClass("special-publisher");
   } else
     $("#publisher").removeClass("special-publisher");
+}
+
+function startSpinner() {
+  var image = document.createElement("img");
+  image.onload = function() {
+    image.style.display = "block";
+  };
+  image.src = "ajax-loader.gif";
+  image.style.display = "none";
+  image.style.zIndex = 10000;
+  image.style.position = "absolute";
+  image.style.top = "30px";
+  image.style.left = "200px";
+  $("#cover").append(image);
+  return image;
+}
+
+function removeSpinner(spinner) {
+  $(spinner).fadeOut(100, function() {
+    $(spinner).remove();
+  });
 }
