@@ -173,6 +173,8 @@ function addNavigation() {
   $("#nextPublisher").bind("click", gotoNextPublisher);
   $("#prevPublisher").bind("click", gotoPrevPublisher);
   $(document).keydown(function(e) {
+    if (document.activeElement.nodeName == "SELECT")
+      return;
     switch(e.which) {
     case 37: // left
     case 38: // up
