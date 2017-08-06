@@ -138,15 +138,21 @@ function display(comic, image, noPush, noVariants) {
   preload();
 }
 
+var lastImage = false;
+
 function loadImageAndDisplay(comic, noPush, noVariants) {
   if (! comic.img) {
     display(comic, false, noPush, noVariants);
     return;
   }
   var image = document.createElement("img");
+  lastImage = image;
   image.onload = function() {
     removeSpinner(spinner);
-    display(comic, image, noPush, noVariants);
+    // Don't do anything if the user has requested something else in
+    // the meantime.
+    if (image === lastImage)
+      display(comic, image, noPush, noVariants);
   };
   image.onerror = function() {
     removeSpinner(spinner);
