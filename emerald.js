@@ -168,11 +168,13 @@ function addNavigation() {
   $("#prevPublisher").bind("click", gotoPrevPublisher);
   $(document).keydown(function(e) {
     switch(e.which) {
+    case 37: // left
     case 38: // up
       removeExplanation();
       gotoPrev();
       break;
 
+    case 39: // right
     case 40: // down
       removeExplanation();
       gotoNext();
