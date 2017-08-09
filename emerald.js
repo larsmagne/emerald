@@ -664,6 +664,7 @@ function rearrangeForMobile() {
   $menu.css("display", "none");
   $menu.append($(options).find("form"));
   $("body").append($menu);
+  $("table.actions").find("tbody").append($("<tr><td id='share'>Share</td></tr>"));
   $("table.actions").find("tbody").append($("<tr><td id='close-menu'>Close</td></tr>"));
   $("table.actions").find("tbody").prepend($("<colgroup> <col style='width:50%'> <col style='width:50%'> <col style='width: 50px'> </colgroup>"));
 
@@ -702,6 +703,9 @@ function rearrangeForMobile() {
   $("#close-menu").click(function() {
     closeMenu();
   });
+  $("#share").click(function() {
+    shareBuyList();
+  });
   var $tr = $("<tr class='misc'>");
   $.map(["mature", "class", "code"], function(name) {
     var $elem = $("#" + name);
@@ -719,6 +723,24 @@ function showMenu() {
 
 function closeMenu() {
   $("#menu").fadeOut(100);
+}
+
+function shareBuyList() {
+  var name = "buys-" + emeraldDate;
+  var buys = localStorage.getItem(name);
+  if (! buys) {
+    colorbox("Nothing marked for buying");
+    return;
+  }
+  var text = "";
+  $.map(buys.split(","), function(code) {
+    if (! code)
+      return;
+    var comic = comics[currentIndex(code)];
+    text += code + " (" + comic.publisher + ") " +
+      comic.name + "\n";
+  });
+  window.plugins.socialsharing.share(text);
 }
 
 var isMobile;
