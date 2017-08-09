@@ -720,18 +720,20 @@ function closeMenu() {
 }
 
 var isMobile;
-$(document).ready(function() {
-  if (window.innerWidth < 760)
-    isMobile = true;
-  if (isMobile) {
-    rearrangeForMobile();
-    var mc = new Hammer($("body")[0]);
-    mc.on("swipeleft", function() {
-      gotoNext();
-    });
-    mc.on("swiperight", function() {
-      gotoPrev();
-    });
-  }
-  startUp();
-});
+function prepareStart() {
+  $(document).ready(function() {
+    if (window.innerWidth < 760)
+      isMobile = true;
+    if (isMobile) {
+      rearrangeForMobile();
+      var mc = new Hammer($("body")[0]);
+      mc.on("swipeleft", function() {
+	gotoNext();
+      });
+      mc.on("swiperight", function() {
+	gotoPrev();
+      });
+    }
+    startUp();
+  });
+}
