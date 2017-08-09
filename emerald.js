@@ -7,8 +7,10 @@ var categories = ["variants", "resolicitations", "relistings",
 var activeCategories = false;
 
 function startUp() {
-  if (window.cordova)
+  if (window.cordova) {
     isMobile = true;
+    StatusBar.overlaysWebView(false);
+  }
   var spinner = startSpinner();
   var match = window.location.href.match("month=([-0-9]+)");
   if (match)
