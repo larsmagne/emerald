@@ -707,6 +707,12 @@ function rearrangeForMobile() {
   $("#share").click(function() {
     shareBuyList();
   });
+  if (phoneGap) {
+    $("td.about").html("About");
+    $("td.about").click(function() {
+      colorbox("This app displays information about comics that can be ordered in the American direct market from Diamond Comic Distributors.  The data comes from their web site.<p>You can mark the comics you are interested in here in this app and then click the 'Share' button to send this list to, for instance, a friendly comic book store that will then order the books in for you.<p>For a more in-depth rationale behind this app, see <a href='http://lars.ingebrigtsen.no/2015/10/22/a-simpler-previews-interface/'>this article</a>");
+    });
+  }
   var $tr = $("<tr class='misc'>");
   $.map(["mature", "class", "code"], function(name) {
     var $elem = $("#" + name);
@@ -716,6 +722,13 @@ function rearrangeForMobile() {
   });
   $tr.append($("<td>"));
   $("table.main").find("tbody").append($tr);
+
+  $("a").click(function() {
+    if (phoneGap && device.platform != "Android")
+      window.open(this.src, "_system", "location=no");
+    else
+      document.location.href = this.src;
+  });
 }
 
 function showMenu() {
