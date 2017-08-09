@@ -84,17 +84,21 @@ function display(comic, image, noPush, noVariants) {
     if (! isMobile) {
       var ratio = image.width / 480;
       var cHeight = $("#cover").height() - 20;
+      if (image.height / ratio > cHeight) {
+	image.style.width = "";
+	image.style.height = cHeight;
+      }    
     } else {
-      ratio = image.width / (window.innerWidth - 100);
+      ratio = image.width / (window.innerWidth - 120);
       cHeight = window.innerHeight - 200;
-      image.style.width = window.innerWidth - 100;
+      image.style.width = window.innerWidth - 120;
       image.style.height = "";
       $("#cover").css("height", cHeight + 40 + "px");
+      if (image.height / ratio > cHeight) {
+	image.style.width = "";
+	image.style.height = cHeight;
+      }    
     }
-    if (image.height / ratio > cHeight) {
-      image.style.width = "";
-      image.style.height = cHeight;
-    }    
     image.style.display = "inline";
     $("#cover").append(image);
     setTimeout(function() {
