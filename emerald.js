@@ -624,7 +624,10 @@ function startSpinner() {
   image.style.zIndex = 10000;
   image.style.position = "absolute";
   image.style.top = "30px";
-  image.style.left = "200px";
+  if (isMobile)
+    image.style.left = "100px";
+  else
+    image.style.left = "200px";
   $("#cover").append(image);
   return image;
 }
