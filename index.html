@@ -8,6 +8,7 @@
 </head>
 <body>
   <table class="main">
+    <tbody id="tmain">
     <tr>
       <td id="publisher" colspan=3></td>
       <td id="creators">
@@ -26,16 +27,16 @@
 	      <label><input id="ones" type=checkbox>First issues</label><br>
               <label><input id="gns" type=checkbox>Graphic novels etc</label><br>
               <label><input id="other" type=checkbox>Other</label><br>
-	  <tr><td id="buy-td" colspan=2><label><input id="buy"
+	  <tr class="removable"><td id="buy-td" colspan=2><label><input id="buy"
 	  type=checkbox>I might buy this</label><br>
 
-	      <tr>
+	      <tr class="removable">
 		<td id="prev" class="navigation" title="Previous comic">&lt;&lt;
 		<td id="next" class="navigation" title="Next comic">&gt;&gt;
-	      <tr>
+	      <tr class="removable">
 		<td id="prevPublisher" class="navigation" title="Previous publisher">&lt;&lt;&lt;
 		<td id="nextPublisher" class="navigation" title="Next publisher">&gt;&gt;&gt;
-	  <tr><td id="explanation" colspan=2>Use the arrow keys to go
+	  <tr class="removable"><td id="explanation" colspan=2>Use the arrow keys to go
 	  the next/ previous comic, and PageUp/ PageDown to go to the
 	  next/ previous publisher.  B or Enter to toggle the 'buy'
 	  mark.  Click publisher name to 'favourite' and be sorted
@@ -64,6 +65,7 @@
       <td id="variant-comics" colspan=3 title="Variant editions">
       <td id="logo"><img src="goshenite.png">
 
+  </tbody>
   </table>
   <script type='text/javascript' src='emerald.js'></script>
   <script type='text/javascript' src='data/timestamp.js'></script>

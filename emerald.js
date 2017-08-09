@@ -61,7 +61,7 @@ function startUp() {
     toggleSpecialPublisher();
   });
   
-  
+  rearrangeForMobile();
 }
 
 function display(comic, image, noPush, noVariants) {
@@ -79,18 +79,23 @@ function display(comic, image, noPush, noVariants) {
     window.history.pushState(comic.code, comic.name, url);
   if (image) {
     var children = $("#cover").children();
+    // Find out if we need to constrain the height to make things fit.
     image.style.position = "absolute";
     image.style.top = "20px";
     image.style.left = "20px";
-    // Find out if we need to constrain the height to make things fit.
     var ratio = image.width / 480;
-    var cHeight = $("#cover").height() - 20;
+    if (! isMobile) {
+      var cHeight = $("#cover").height() - 20;
+    } else {
+      cHeight = 300;
+      $("#cover").css("height", cHeight + 40 + "px");
+    }
     if (image.height / ratio > cHeight) {
       image.style.width = "";
       image.style.height = cHeight;
     }    
-    $("#cover").append(image);
     image.style.display = "inline";
+    $("#cover").append(image);
     setTimeout(function() {
       $.map(children, function(elem) {
 	$(elem).fadeOut(100, function() {
@@ -626,3 +631,67 @@ function removeSpinner(spinner) {
     $(spinner).remove();
   });
 }
+
+function rearrangeForMobile() {
+  var creators = $("#creators")[0];
+  var cover = $("#cover")[0];
+  var options = $("#options")[0];
+
+  $("#creators").remove();
+  $("#cover").remove();
+  $("#options").remove();
+  $("#logo").remove();
+
+  var $menu = $("<div id='menu'>");
+  $menu.css("display", "none");
+  $menu.append($(options).find("form"));
+  $("body").append($menu);
+  $("table.actions").find("tbody").append($("<tr><td id='close-menu'>Close</td></tr>"));
+
+  $.map([creators, cover], function(elem) {
+    var tr = document.createElement("tr");
+    $(tr).append(elem);
+    $("#tmain").prepend(tr);
+    if (elem === cover) {
+      $(elem).attr("colspan", "2");
+      $(elem).attr("rowspan", "6");
+      $.map(["next", "buy-td", "prevPublisher", "nextPublisher", "prev"], function(name) {
+	var line = document.createElement("tr");
+	var $elem = $("#" + name);
+	$elem.remove();
+	$(line).append($elem);
+	if (name == "next") {
+	  $("#cover").after($elem);
+	  $(tr).after($("<tr><td id='small-menu'>Menu</tr>"));
+	} else
+	  $(tr).after(line);
+      });
+    } else {
+      $(elem).attr("colspan", "3");
+      $(elem).attr("rowspan", "1");
+    }
+  });
+
+  // Remove "I might buy this" text.
+  $($("#buy-td")[0].childNodes[0].childNodes[1]).remove();
+  $("#small-menu").click(function () {
+    showMenu();
+  });
+  $(".removable").remove();
+  $("#close-menu").click(function() {
+    closeMenu();
+  });
+}
+
+function showMenu() {
+  $("#menu").fadeIn(100);
+}
+
+function closeMenu() {
+  $("#menu").fadeOut(100);
+}
+
+var isMobile;
+$(document).ready(function() {      
+  isMobile = window.matchMedia("only screen and (max-width: 760px)");
+});
