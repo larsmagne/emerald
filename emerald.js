@@ -469,7 +469,6 @@ function colorbox(html) {
   box.style.width = window.innerWidth + "px";
   box.style.display = "block";
   box.style.background = "#f0f0f0";
-  box.style.color = "black";
   box.style.padding = "50px";
   box.className = "event-lightbox";
   box.innerHTML = html + "<div class='close'><span>Close</span></div>";
