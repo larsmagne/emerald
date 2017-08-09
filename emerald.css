@@ -228,6 +228,9 @@ td#text:hover:after {
   td#close-menu {
     font-weight: bold;
   }
+  td#share {
+    font-weight: bold;
+  }
   body {
     margin: 0px;
   }
