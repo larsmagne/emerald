@@ -253,6 +253,9 @@ function currentIndex(code) {
 }
 
 function gotoNext() {
+  // Don't do anything if a message is being displayed.
+  if ($(".event-lightbox").length > 0)
+    return;
   var len = comics.length;
   var i = currentIndex();
   while (++i < len) {
@@ -264,6 +267,9 @@ function gotoNext() {
 }
 
 function gotoPrev() {
+  // Don't do anything if a message is being displayed.
+  if ($(".event-lightbox").length > 0)
+    return;
   var len = comics.length;
   var i = currentIndex();
   while (--i > 0) {
