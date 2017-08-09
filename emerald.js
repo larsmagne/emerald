@@ -9,8 +9,8 @@ var phoneGap = false;
 
 function startUp() {
   if (phoneGap) {
-    $.support.cors = true;
-    StatusBar.overlaysWebView(false);
+    //$.support.cors = true;
+    //StatusBar.overlaysWebView(false);
   }
   var spinner = startSpinner();
   var match = window.location.href.match("month=([-0-9]+)");
