@@ -470,7 +470,7 @@ function colorbox(html) {
   box.style.display = "block";
   box.style.background = "#f0f0f0";
   box.style.color = "black";
-  box.style.padding = "100px";
+  box.style.padding = "50px";
   box.className = "event-lightbox";
   box.innerHTML = html + "<div class='close'><span>Close</span></div>";
   document.body.appendChild(box);
@@ -758,7 +758,7 @@ function shareBuyList() {
       return;
     var comic = comics[currentIndex(code)];
     text += code + " (" + comic.publisher + ") " +
-      comic.name + "\n";
+      comic.name + "\n\n";
   });
   window.plugins.socialsharing.share(text);
 }
