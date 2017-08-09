@@ -79,9 +79,9 @@ function display(comic, image, noPush, noVariants) {
     var children = $("#cover").children();
     // Find out if we need to constrain the height to make things fit.
     image.style.position = "absolute";
-    image.style.top = "20px";
-    image.style.left = "20px";
     if (! isMobile) {
+      image.style.top = "20px";
+      image.style.left = "20px";
       var ratio = image.width / 480;
       var cHeight = $("#cover").height() - 20;
       if (image.height / ratio > cHeight) {
@@ -89,11 +89,13 @@ function display(comic, image, noPush, noVariants) {
 	image.style.height = cHeight;
       }    
     } else {
-      ratio = image.width / (window.innerWidth - 120);
-      cHeight = window.innerHeight - 200;
-      image.style.width = window.innerWidth - 120;
+      image.style.top = "5px";
+      image.style.left = "5px";
+      ratio = image.width / (window.innerWidth - 85);
+      cHeight = 350;
+      image.style.width = window.innerWidth - 85;
       image.style.height = "";
-      $("#cover").css("height", cHeight + 40 + "px");
+      $("#cover").css("height", cHeight + 10 + "px");
       if (image.height / ratio > cHeight) {
 	image.style.width = "";
 	image.style.height = cHeight;
@@ -717,10 +719,10 @@ $(document).ready(function() {
   if (isMobile) {
     rearrangeForMobile();
     var mc = new Hammer($("body")[0]);
-    mc.on("swiperight", function() {
+    mc.on("swipeleft", function() {
       gotoNext();
     });
-    mc.on("swipeleft", function() {
+    mc.on("swiperight", function() {
       gotoPrev();
     });
   }

@@ -228,4 +228,7 @@ td#text:hover:after {
   td#close-menu {
     font-weight: bold;
   }
+  body {
+    margin: 0px;
+  }
 }
