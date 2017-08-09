@@ -5,9 +5,10 @@ var emeraldDates = false;
 var categories = ["variants", "resolicitations", "relistings",
 		  "ones", "gns", "other"];
 var activeCategories = false;
+var phoneGap = false;
 
 function startUp() {
-  if (isMobile) {
+  if (phoneGap) {
     StatusBar.overlaysWebView(false);
   }
   var spinner = startSpinner();
