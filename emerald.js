@@ -9,6 +9,7 @@ var phoneGap = false;
 
 function startUp() {
   if (phoneGap) {
+    $.support.cors = true;
     StatusBar.overlaysWebView(false);
   }
   var spinner = startSpinner();
