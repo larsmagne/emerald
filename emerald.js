@@ -673,7 +673,7 @@ function rearrangeForMobile() {
     $("#tmain").prepend(tr);
     if (elem === cover) {
       $(elem).attr("colspan", "2");
-      $(elem).attr("rowspan", "6");
+      $(elem).attr("rowspan", "7");
       $.map(["next", "buy-td", "prevPublisher", "nextPublisher", "prev"], function(name) {
 	var line = document.createElement("tr");
 	var $elem = $("#" + name);
@@ -681,6 +681,7 @@ function rearrangeForMobile() {
 	$(line).append($elem);
 	if (name == "next") {
 	  $("#cover").after($elem);
+	  $(tr).after($("<tr><td id='spacer'></tr>"));
 	  $(tr).after($("<tr><td id='small-menu'>Menu</tr>"));
 	} else
 	  $(tr).after(line);

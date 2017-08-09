@@ -231,4 +231,7 @@ td#text:hover:after {
   body {
     margin: 0px;
   }
+  td#spacer {
+    height: 100%;
+  }
 }
