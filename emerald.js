@@ -733,4 +733,5 @@ $(document).ready(function() {
       gotoPrev();
     });
   }
+  startUp();
 });
