@@ -231,7 +231,7 @@ td#text:hover:after {
   td#share {
     font-weight: bold;
   }
-  td#about {
+  td.about {
     font-weight: bold;
   }
   body {
