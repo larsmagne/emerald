@@ -231,6 +231,9 @@ td#text:hover:after {
   td#share {
     font-weight: bold;
   }
+  td#about {
+    font-weight: bold;
+  }
   body {
     margin: 0px;
   }
