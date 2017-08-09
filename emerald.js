@@ -664,7 +664,8 @@ function rearrangeForMobile() {
   $menu.css("display", "none");
   $menu.append($(options).find("form"));
   $("body").append($menu);
-  $("table.actions").find("tbody").append($("<tr><td id='share'>Share</td></tr>"));
+  if (phoneGap)
+    $("table.actions").find("tbody").append($("<tr><td id='share'>Share</td></tr>"));
   $("table.actions").find("tbody").append($("<tr><td id='close-menu'>Close</td></tr>"));
   $("table.actions").find("tbody").prepend($("<colgroup> <col style='width:50%'> <col style='width:50%'> <col style='width: 50px'> </colgroup>"));
 
