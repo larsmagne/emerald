@@ -167,9 +167,9 @@ function loadImageAndDisplay(comic, noPush, noVariants) {
   }
   var pre = preloadedImages[comic.img];
   if (pre) {
-    console.log("Preloaded");
     preloadedImages[comic.img] = false;
     display(comic, pre, noPush, noVariants);
+    return;
   }
   var image = document.createElement("img");
   lastImage = image;
