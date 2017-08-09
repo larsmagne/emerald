@@ -315,9 +315,13 @@ function wanted(comic) {
   // This is rather confused logic, but I wanted the "list first
   // issues and graphic novels" logic, which is what I want...
   if ($.inArray("ones", activeCategories) != -1) {
-    if (comic.issue == "#1" || comic.issue == "VOL 01")
-      return true;
-    else {
+    if (comic.issue == "#1" || comic.issue == "VOL 01") {
+      if ($.inArray("relistings", activeCategories) == -1 &&
+	  (comic.original || comic["class"] == "SS" || comic["class"] == "OA"))
+	return false;
+      else
+	return true;
+    } else {
       if ($.inArray("resolicitations", activeCategories) == -1 &&
 	  comic.resolicited)
 	return false;
