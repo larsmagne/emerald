@@ -462,9 +462,9 @@ function checkCategories () {
 
 function colorbox(html) {
   var box = document.createElement("div");
-  box.style.position = "absolute";
+  box.style.position = "fixed";
   box.style.left = "0px";
-  box.style.top = $(window).scrollTop() + "px";
+  box.style.top = "0px";
   box.style.height = window.innerHeight + "px";
   box.style.width = window.innerWidth + "px";
   box.style.display = "block";
