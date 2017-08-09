@@ -6,6 +6,17 @@ body {
 ::-webkit-scrollbar { 
   display: none; 
 }
+div.event-lightbox {
+  padding: 50px;
+  background: linear-gradient(to bottom, #f05050 0%, #903030 100%);
+  color: black;
+}
+div.inner-box {
+  margin: 10px;
+  border-radius: 5px;
+  padding: 10px;
+  background: linear-gradient(to bottom, #c0c0c0 0%, #909090 100%);
+}
 table.main {
   margin: auto;
   width: 1200px;
