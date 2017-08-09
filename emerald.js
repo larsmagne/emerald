@@ -85,8 +85,8 @@ function display(comic, image, noPush, noVariants) {
       var ratio = image.width / 480;
       var cHeight = $("#cover").height() - 20;
     } else {
-      ratio = image.width / $(window).width() - 200;
-      cHeight = $(window).height() - 200;
+      ratio = image.width / window.innerWidth - 200;
+      cHeight = window.innerHeight - 200;
       image.style.height = cHeight;
       image.style.width = "";
       $("#cover").css("height", cHeight + 40 + "px");
@@ -650,6 +650,7 @@ function rearrangeForMobile() {
   $menu.append($(options).find("form"));
   $("body").append($menu);
   $("table.actions").find("tbody").append($("<tr><td id='close-menu'>Close</td></tr>"));
+  $("table.actions").find("tbody").prepend($("<colgroup> <col style='width:50%'> <col style='width:50%'> <col style='width: 50px'> </colgroup>"));
 
   $.map([creators, cover], function(elem) {
     var tr = document.createElement("tr");
@@ -668,7 +669,6 @@ function rearrangeForMobile() {
 	  $(tr).after($("<tr><td id='small-menu'>Menu</tr>"));
 	} else
 	  $(tr).after(line);
-	$("#" + name).css("width", "50px");
       });
     } else {
       $(elem).attr("colspan", "3");
@@ -686,8 +686,7 @@ function rearrangeForMobile() {
     closeMenu();
   });
   $.map(["small-menu", "mature", "class", "code"], function(name) {
-    $("#" + name).css("width", "50px");
-    $("#" + name).css("overflow", "hidden");
+    $("#" + name).attr("id", "#not-" + name);
   });
 }
 
