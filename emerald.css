@@ -240,4 +240,9 @@ td#text:hover:after {
   td#spacer {
     height: 100%;
   }
+  div.event-lightbox {
+    padding: 0px;
+    background: linear-gradient(to bottom, #f05050 0%, #903030 100%);
+    color: black;
+  }
 }
