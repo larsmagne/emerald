@@ -165,6 +165,12 @@ function loadImageAndDisplay(comic, noPush, noVariants) {
     display(comic, false, noPush, noVariants);
     return;
   }
+  var pre = preloadedImages[comic.img];
+  if (pre) {
+    console.log("Preloaded");
+    preloadedImages[comic.img] = false;
+    display(comic, pre, noPush, noVariants);
+  }
   var image = document.createElement("img");
   lastImage = image;
   image.onload = function() {
@@ -380,11 +386,14 @@ function wanted(comic) {
   return true;
 }
 
+var preloadedImages = [];
+
 function preloadImage(comic) {
-  if (! comic || ! comic.img)
+  if (! comic || ! comic.img || preloadedImages[comic.img])
     return;
   var image = document.createElement("img");
   image.onload = function() {
+    preloadedImages[comic.img] = image;
     $(image).remove();
   };
   image.src = comic.img;
