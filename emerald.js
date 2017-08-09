@@ -85,7 +85,7 @@ function display(comic, image, noPush, noVariants) {
       var ratio = image.width / 480;
       var cHeight = $("#cover").height() - 20;
     } else {
-      ratio = image.width / window.innerWidth - 200;
+      ratio = image.width / (window.innerWidth - 200);
       cHeight = window.innerHeight - 200;
       image.style.height = cHeight;
       image.style.width = "";
@@ -701,6 +701,14 @@ function closeMenu() {
 var isMobile;
 $(document).ready(function() {      
   isMobile = window.matchMedia("only screen and (max-width: 760px)");
-  if (isMobile)
+  if (isMobile) {
     rearrangeForMobile();
+    var mc = new Hammer($("body")[0]);
+    mc.on("swiperight", function() {
+      gotoNext();
+    });
+    mc.on("swipeleft", function() {
+      gotoPrev();
+    });
+  }
 });
