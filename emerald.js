@@ -7,7 +7,7 @@ var categories = ["variants", "resolicitations", "relistings",
 var activeCategories = false;
 
 function startUp() {
-  startSpinner();
+  var spinner = startSpinner();
   var match = window.location.href.match("month=([-0-9]+)");
   if (match)
     emeraldDate = match[1];
@@ -20,9 +20,10 @@ function startUp() {
     window.history.pushState("emerald", "emerald", url);
   }
   $.ajax({
-    url: "data/previews-" + emeraldDate + ".json",
+    url: "http://goshenite.no/data/previews-" + emeraldDate + ".json",
     dataType: "json",
     success: function(data) {
+      removeSpinner(spinner);
       var s = localStorage.getItem("specials");
       if (! s)
 	var specials = false;
@@ -715,7 +716,7 @@ function closeMenu() {
 
 var isMobile;
 $(document).ready(function() {      
-  isMobile = window.matchMedia("only screen and (max-width: 760px)");
+  isMobile = window.innerWidth < 760 || !!window.cordova;
   if (isMobile) {
     rearrangeForMobile();
     var mc = new Hammer($("body")[0]);
