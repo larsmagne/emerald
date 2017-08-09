@@ -685,9 +685,15 @@ function rearrangeForMobile() {
   $("#close-menu").click(function() {
     closeMenu();
   });
-  $.map(["small-menu", "mature", "class", "code"], function(name) {
-    $("#" + name).attr("id", "#not-" + name);
+  var $tr = $("<tr class='misc'>");
+  $.map(["mature", "class", "code"], function(name) {
+    var $elem = $("#" + name);
+    if (name == "class" || name == "code")
+      $tr.append($elem.clone());
+    $elem.attr("id", "#not-" + name);
   });
+  $tr.append($("<td>"));
+  $("table.main").find("tbody").append($tr);
 }
 
 function showMenu() {
