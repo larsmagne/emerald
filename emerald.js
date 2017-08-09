@@ -85,10 +85,10 @@ function display(comic, image, noPush, noVariants) {
       var ratio = image.width / 480;
       var cHeight = $("#cover").height() - 20;
     } else {
-      ratio = image.width / (window.innerWidth - 200);
+      ratio = image.width / (window.innerWidth - 100);
       cHeight = window.innerHeight - 200;
-      image.style.height = cHeight;
-      image.style.width = "";
+      image.style.width = window.innerWidth - 100;
+      image.style.height = "";
       $("#cover").css("height", cHeight + 40 + "px");
     }
     if (image.height / ratio > cHeight) {
