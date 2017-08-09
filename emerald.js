@@ -7,8 +7,7 @@ var categories = ["variants", "resolicitations", "relistings",
 var activeCategories = false;
 
 function startUp() {
-  if (window.cordova) {
-    isMobile = true;
+  if (isMobile) {
     StatusBar.overlaysWebView(false);
   }
   var spinner = startSpinner();
@@ -719,8 +718,9 @@ function closeMenu() {
 }
 
 var isMobile;
-$(document).ready(function() {      
-  isMobile = window.innerWidth < 760 || !!window.cordova;
+$(document).ready(function() {
+  if (window.innerWidth < 760)
+    isMobile = true;
   if (isMobile) {
     rearrangeForMobile();
     var mc = new Hammer($("body")[0]);
