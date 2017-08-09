@@ -57,9 +57,11 @@ function startUp() {
       checkCategories();
       addMonths();
     }});
-    $("#publisher").click(function() {
-      toggleSpecialPublisher();
-    });
+  $("#publisher").click(function() {
+    toggleSpecialPublisher();
+  });
+  
+  
 }
 
 function display(comic, image, noPush, noVariants) {
