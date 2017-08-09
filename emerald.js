@@ -60,8 +60,6 @@ function startUp() {
   $("#publisher").click(function() {
     toggleSpecialPublisher();
   });
-  
-  rearrangeForMobile();
 }
 
 function display(comic, image, noPush, noVariants) {
@@ -83,11 +81,14 @@ function display(comic, image, noPush, noVariants) {
     image.style.position = "absolute";
     image.style.top = "20px";
     image.style.left = "20px";
-    var ratio = image.width / 480;
     if (! isMobile) {
+      var ratio = image.width / 480;
       var cHeight = $("#cover").height() - 20;
     } else {
-      cHeight = 300;
+      ratio = image.width / $(window).width() - 200;
+      cHeight = $(window).height() - 200;
+      image.style.height = cHeight;
+      image.style.width = "";
       $("#cover").css("height", cHeight + 40 + "px");
     }
     if (image.height / ratio > cHeight) {
@@ -519,6 +520,7 @@ function addPublishers() {
       i++;
     loadImageAndDisplay(comics[i]);
     $select.blur();
+    closeMenu();
   });
 }
 
@@ -541,6 +543,7 @@ function addMonths() {
     $select.blur();
     var url = window.location.href.replace(/[?].*/, "");
     window.location.href = url + "?month=" + $select.val();
+    closeMenu();
   });
 }
 
@@ -665,6 +668,7 @@ function rearrangeForMobile() {
 	  $(tr).after($("<tr><td id='small-menu'>Menu</tr>"));
 	} else
 	  $(tr).after(line);
+	$("#" + name).css("width", "50px");
       });
     } else {
       $(elem).attr("colspan", "3");
@@ -681,6 +685,10 @@ function rearrangeForMobile() {
   $("#close-menu").click(function() {
     closeMenu();
   });
+  $.map(["small-menu", "mature", "class", "code"], function(name) {
+    $("#" + name).css("width", "50px");
+    $("#" + name).css("overflow", "hidden");
+  });
 }
 
 function showMenu() {
@@ -694,4 +702,6 @@ function closeMenu() {
 var isMobile;
 $(document).ready(function() {      
   isMobile = window.matchMedia("only screen and (max-width: 760px)");
+  if (isMobile)
+    rearrangeForMobile();
 });

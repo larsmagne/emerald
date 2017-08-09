@@ -167,7 +167,7 @@ td#text:hover:after {
   /* Style adjustments for small screens. */
   td#cover {
     width: default;
-    text-align: left;
+    text-align: center;
     position: default;
   }
   table.main {
@@ -228,5 +228,4 @@ td#text:hover:after {
   td#close-menu {
     font-weight: bold;
   }
-    
 }
