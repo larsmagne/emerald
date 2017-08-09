@@ -677,6 +677,7 @@ function rearrangeForMobile() {
       $.map(["next", "buy-td", "prevPublisher", "nextPublisher", "prev"], function(name) {
 	var line = document.createElement("tr");
 	var $elem = $("#" + name);
+	$elem.attr("colspan", "1");
 	$elem.remove();
 	$(line).append($elem);
 	if (name == "next") {
