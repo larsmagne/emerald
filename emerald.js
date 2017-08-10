@@ -105,7 +105,9 @@ function display(comic, image, noPush, noVariants) {
 	image.style.width = "";
 	image.style.height = cHeight;
 	setTimeout(function() {
-	  $(image).animate({height: $("#cover").height()}, 80);
+	  var newHeight = $("#cover").height();
+	  if (newHeight < cHeight)
+	    $(image).animate({height: newHeight}, 80);
 	}, 1);
       }
       $("#cover").css("height", window.innerHeight / 2 + "px");
