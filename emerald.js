@@ -98,7 +98,7 @@ function display(comic, image, noPush, noVariants) {
       image.style.top = "5px";
       image.style.left = "5px";
       ratio = image.width / (window.innerWidth - 85);
-      cHeight = $("#cover").height();
+      cHeight = $("#cover").height() - 10;
       image.style.width = window.innerWidth - 85;
       image.style.height = "";
       if (image.height / ratio > cHeight) {
