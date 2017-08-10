@@ -98,14 +98,17 @@ function display(comic, image, noPush, noVariants) {
       image.style.top = "5px";
       image.style.left = "5px";
       ratio = image.width / (window.innerWidth - 85);
-      cHeight = window.innerHeight / 2;
+      cHeight = $("#cover").height();
       image.style.width = window.innerWidth - 85;
       image.style.height = "";
-      $("#cover").css("height", cHeight + 10 + "px");
       if (image.height / ratio > cHeight) {
 	image.style.width = "";
 	image.style.height = cHeight;
-      }    
+	setTimeout(function() {
+	  $(image).animate({height: $("#cover").height()}, 80);
+	}, 1);
+      }
+      $("#cover").css("height", window.innerHeight / 2 + "px");
     }
     image.style.display = "inline";
     $("#cover").append(image);
