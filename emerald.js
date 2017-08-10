@@ -416,8 +416,11 @@ function pruneImageCache() {
   var size = 40;
   var arr = [];
   var i = 0;
-  for (var key in preloadedImages) 
-    arr[i++] = [preloadedImages[key][0], key];
+  for (var key in preloadedImages) {
+    var img = preloadedImages[key];
+    if (img)
+      arr[i++] = [img[0], key];
+  }
   if (arr.length < size)
     return;
   // Sort the oldest first.
