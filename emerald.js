@@ -172,8 +172,7 @@ function loadImageAndDisplay(comic, noPush, noVariants) {
   }
   var pre = preloadedImages[comic.img];
   if (pre) {
-    preloadedImages[comic.img] = false;
-    display(comic, pre, noPush, noVariants);
+    display(comic, pre[1], noPush, noVariants);
     return;
   }
   var image = document.createElement("img");
@@ -398,7 +397,7 @@ function preloadImage(comic) {
     return;
   var image = document.createElement("img");
   image.onload = function() {
-    preloadedImages[comic.img] = image;
+    preloadedImages[comic.img] = [new Date(), image];
     $(image).remove();
   };
   image.src = comic.img;
@@ -406,6 +405,28 @@ function preloadImage(comic) {
   image.style.width = "480px";
   image.style.display = "none";
   document.body.appendChild(image);
+  pruneImageCache();
+}
+
+function mTime(d) {
+  return d.getTime() + d.getMilliseconds() / 1000;
+}
+
+function pruneImageCache() {
+  var size = 40;
+  var arr = [];
+  var i = 0;
+  for (var key in preloadedImages) 
+    arr[i++] = [preloadedImages[key][0], key];
+  if (arr.length < size)
+    return;
+  // Sort the oldest first.
+  arr.sort(function(e1, e2) {
+    return mTime(e1[0]) - mTime(e2[0]);
+  });
+  // Remove from the image cache.
+  for (i = 0; i < arr.length - size; i++)
+    preloadedImages[arr[1]] = false;
 }
 
 function toggleBuy() {
