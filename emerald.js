@@ -104,15 +104,40 @@ function display(comic, image, noPush, noVariants) {
       cHeight = $("#cover").height() + 10;
       image.style.width = window.innerWidth - 10;
       image.style.height = "";
+      var oldSize;
       if (image.height / ratio > cHeight) {
 	image.style.width = "";
 	image.style.height = cHeight;
 	setTimeout(function() {
 	  var newHeight = $("#cover").height() + 10;
-	  if (newHeight < cHeight)
-	    $(image).animate({height: newHeight + 30}, 80);
+	  if (newHeight < cHeight) {
+	    $(image).animate({height: newHeight + 30}, 80, function() {
+	      oldSize = [$(image).width(), $(image).height()];
+	    });
+	  }
 	}, 1);
       }
+      setTimeout(function() {
+	oldSize = [$(image).width(), $(image).height()];
+	console.log(oldSize);
+      }, 1);
+      
+      var expanded = false;
+      if (image.height / ratio < cHeight)
+	var fullSize = [image.width / ratio - 10, window.innerHeight - 10];
+      else
+	fullSize = [window.innerWidth - 20, image.height / ratio - 20];
+      $(image).click(function() {
+	if (expanded)
+	  $(image).animate({width: oldSize[0],
+			    height: oldSize[1]},
+			   80);
+	  else
+	    $(image).animate({width: fullSize[0],
+			      height: fullSize[1]},
+			     80);
+	expanded = ! expanded;
+      });
       $("#cover").css("height", window.innerHeight / 2 + "px");
     }
     image.style.display = "inline";
