@@ -98,9 +98,14 @@ function display(comic, image, noPush, noVariants) {
       image.style.top = "5px";
       image.style.left = "5px";
       ratio = image.width / (window.innerWidth - 10);
+      var scale = 2;
+      // On smaller devices, use proportionally larger parts of the
+      // screen for the cover.
+      if (window.innerHeight < 1000)
+	scale = 1.5;
       // Ensure that we start out with a reasonable size.
-      if ($("#cover").height() < window.innerHeight / 2)
-	cHeight = window.innerHeight / 1.5;
+      if ($("#cover").height() < window.innerHeight / scale)
+	cHeight = window.innerHeight / scale;
       else
 	cHeight = $("#cover").height() + 10;
       image.style.width = window.innerWidth - 10;
@@ -110,8 +115,8 @@ function display(comic, image, noPush, noVariants) {
 	image.style.width = "";
 	image.style.height = cHeight;
 	setTimeout(function() {
-	  if ($("#cover").height() < window.innerHeight / 1.5)
-	    $("#cover").css("height", window.innerHeight / 1.5 + "px");
+	  if ($("#cover").height() < window.innerHeight / scale)
+	    $("#cover").css("height", window.innerHeight / scale + "px");
 	  else
 	    $("#cover").css("height", "100%");
 	  var newHeight = $("#cover").height();
