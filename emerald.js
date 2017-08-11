@@ -98,7 +98,7 @@ function display(comic, image, noPush, noVariants) {
       image.style.top = "5px";
       image.style.left = "5px";
       ratio = image.width / (window.innerWidth - 85);
-      cHeight = $("#cover").height() - 10;
+      var cHeight = Math.max($("#cover").height() - 10, window.innerHeight / 2);
       image.style.width = window.innerWidth - 85;
       image.style.height = "";
       if (image.height / ratio > cHeight) {
@@ -708,33 +708,42 @@ function rearrangeForMobile() {
   if (phoneGap)
     $("table.actions").find("tbody").append($("<tr><td id='share'>Share</td></tr>"));
   $("table.actions").find("tbody").append($("<tr><td id='close-menu'>Close</td></tr>"));
-  $("table.actions").find("tbody").prepend($("<colgroup> <col style='width:50%'> <col style='width:50%'> <col style='width: 50px'> </colgroup>"));
 
   $.map([creators, cover], function(elem) {
     var tr = document.createElement("tr");
     $(tr).append(elem);
     $("#tmain").prepend(tr);
-    if (elem === cover) {
-      $(elem).attr("colspan", "2");
-      $(elem).attr("rowspan", "7");
-      $.map(["next", "buy-td", "prevPublisher", "nextPublisher", "prev"], function(name) {
-	var line = document.createElement("tr");
-	var $elem = $("#" + name);
-	$elem.attr("colspan", "1");
-	$elem.remove();
-	$(line).append($elem);
-	if (name == "next") {
-	  $("#cover").after($elem);
-	  $(tr).after($("<tr><td id='spacer'></tr>"));
-	  $(tr).after($("<tr><td id='small-menu'>Menu</tr>"));
-	} else
-	  $(tr).after(line);
-      });
-    } else {
-      $(elem).attr("colspan", "3");
-      $(elem).attr("rowspan", "1");
-    }
+    $(elem).attr("colspan", "3");
+    $(elem).attr("rowspan", "1");
   });
+
+  var barCont = document.createElement("div");
+  barCont.className = "navigation-bar";
+  var barInner = document.createElement("div");
+  $(barCont).append(barInner);
+  var bar = document.createElement("table");
+  bar.className = "navigation-bar";
+  $(barInner).append(bar);
+  var line = document.createElement("tr");
+  $(bar).append(line);
+  $(line).append($("<td id='small-menu'>Menu</td>"));
+  $.map(["buy-td", "prevPublisher", "nextPublisher", "prev", "next"], function(name) {
+    var $elem = $("#" + name);
+    $elem.attr("colspan", "1");
+    $elem.remove();
+    $(line).append($elem);
+  });
+  $("body").append(barCont);
+
+  var trans = {"prevPublisher": "fast_rewind",
+	       "nextPublisher": "fast_forward",
+	       "prev": "skip_previous",
+	       "next": "skip_next",
+	       "small-menu": "more_horiz"};
+  for (var key in trans) {
+    var $elem = $("#" + key);
+    $elem.html("<i class='material-icons'>" + trans[key] + "</i>");
+  }
 
   // Remove "I might buy this" text.
   $($("#buy-td")[0].childNodes[0].childNodes[1]).remove();
@@ -754,22 +763,60 @@ function rearrangeForMobile() {
       colorbox("This app displays information about comics that can be ordered in the American direct market from <a href='http://www.diamondcomics.com/'>Diamond Comic Distributors</a>.  The data comes from their web site.<p>You can mark the comics you are interested in here in this app and then click the 'Share' button to send this list to, for instance, a friendly comic book store that will then order the books in for you.<p>For a more in-depth rationale behind this app, see <a href='http://lars.ingebrigtsen.no/2015/10/22/a-simpler-previews-interface/'>this article</a>.");
     });
   }
-  var $tr = $("<tr class='misc'>");
-  $.map(["mature", "class", "code"], function(name) {
-    var $elem = $("#" + name);
-    if (name == "class" || name == "code")
-      $tr.append($elem.clone());
-    $elem.attr("id", "#not-" + name);
-  });
-  $tr.append($("<td>"));
-  $("table.main").find("tbody").append($tr);
-
   $("a").click(function() {
     if (phoneGap && device.platform != "Android")
       window.open(this.src, "_system", "location=no");
     else
       document.location.href = this.src;
   });
+
+  waitForWebfonts("Material Icons", "normal", function() {
+    $(barCont).css({"top": window.innerHeight - 45 + "px",
+		    "display": "block"});
+  });
+}
+
+function makeNavigationBar() {
+  console.log("making navigation");
+}
+
+function waitForWebfonts(font, weight, callback) {
+  var times = 0;
+  var node = document.createElement('span');
+  // Characters that vary significantly among different fonts
+  node.innerHTML = 'giItT1WQy@!-/#';
+  // Visible - so we can measure it - but not on the screen
+  node.style.position      = 'absolute';
+  node.style.left          = '-10000px';
+  node.style.top           = '-10000px';
+  // Large font size makes even subtle changes obvious
+  node.style.fontSize      = '300px';
+  // Reset any font properties
+  node.style.fontFamily    = 'serif';
+  node.style.fontVariant   = 'normal';
+  node.style.fontStyle     = 'normal';
+  node.style.fontWeight    = weight;
+  node.style.letterSpacing = '0';
+  document.body.appendChild(node);
+
+  // Remember width with no applied web font
+  var width = node.offsetWidth;
+
+  node.style.fontFamily = font;
+  
+  var interval;
+  var checkFont = function() {
+    // Compare current width with original width
+    if (node && node.offsetWidth != width ||
+       times++ > 10) {
+      clearInterval(interval);
+      callback();
+      return true;
+    }
+    return false;
+  };
+  
+  interval = setInterval(checkFont, 50);
 }
 
 function showMenu() {
@@ -816,3 +863,4 @@ function prepareStart() {
     startUp();
   });
 }
+
