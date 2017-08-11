@@ -126,7 +126,7 @@ function display(comic, image, noPush, noVariants) {
       if (image.height / ratio < cHeight)
 	var fullSize = [image.width / ratio - 10, window.innerHeight - 10];
       else
-	fullSize = [window.innerWidth - 20, image.height / ratio - 20];
+	fullSize = [window.innerWidth - 10, image.height / ratio - 10];
       $(image).click(function() {
 	if (expanded)
 	  $(image).animate({width: oldSize[0],
