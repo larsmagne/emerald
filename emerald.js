@@ -854,6 +854,11 @@ function prepareStart() {
     if (window.innerWidth < 760)
       isMobile = true;
     if (isMobile) {
+      if ('addEventListener' in document) {
+	document.addEventListener('DOMContentLoaded', function() {
+	  FastClick.attach(document.body);
+	}, false);
+      }
       rearrangeForMobile();
       var mc = new Hammer($("body")[0]);
       mc.on("swipeleft", function() {
