@@ -110,8 +110,10 @@ function display(comic, image, noPush, noVariants) {
 	image.style.width = "";
 	image.style.height = cHeight;
 	setTimeout(function() {
-	  if ($("#cover").height() < window.innerHeight / 3)
+	  if ($("#cover").height() < window.innerHeight / 2)
 	    $("#cover").css("height", window.innerHeight / 2 + "px");
+	  else
+	    $("#cover").css("height", "100%");
 	  var newHeight = $("#cover").height();
 	  if (newHeight < cHeight) {
 	    $(image).animate({height: newHeight + 10}, 80, function() {
