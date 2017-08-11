@@ -104,7 +104,7 @@ function display(comic, image, noPush, noVariants) {
       if (window.innerHeight < 1000)
 	scale = 1.5;
       // Ensure that we start out with a reasonable size.
-      if ($("#cover").height() < window.innerHeight / scale)
+      if ($("#cover").height() < window.innerHeight / 3)
 	cHeight = window.innerHeight / scale;
       else
 	cHeight = $("#cover").height() + 10;
