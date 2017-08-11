@@ -68,6 +68,8 @@ function startUp() {
   });
 }
 
+var firstTime = true;
+
 function display(comic, image, noPush, noVariants) {
   current = comic.code;
   var url = window.location.href;
@@ -104,10 +106,16 @@ function display(comic, image, noPush, noVariants) {
       if (window.innerHeight < 1000)
 	scale = 1.5;
       // Ensure that we start out with a reasonable size.
-      if ($("#cover").height() < window.innerHeight / 3)
+      if (firstTime) {
+	$("#cover").css("height", window.innerHeight / scale + "px");
 	cHeight = window.innerHeight / scale;
-      else
-	cHeight = $("#cover").height() + 10;
+	firstTime = false;
+      } else {
+	if ($("#cover").height() < window.innerHeight / 3)
+	  cHeight = window.innerHeight / scale;
+	else
+	  cHeight = $("#cover").height() + 10;
+      }
       image.style.width = window.innerWidth - 10;
       image.style.height = "";
       var oldSize;
