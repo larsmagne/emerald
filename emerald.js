@@ -25,7 +25,7 @@ function startUp() {
     window.history.pushState("emerald", "emerald", url);
   }
   $.ajax({
-    url: "http://goshenite.no/data/previews-" + emeraldDate + ".json",
+    url: "http://goshenite.info/data/previews-" + emeraldDate + ".json",
     dataType: "json",
     success: function(data) {
       removeSpinner(spinner);
