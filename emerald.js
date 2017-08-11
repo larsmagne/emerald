@@ -97,17 +97,20 @@ function display(comic, image, noPush, noVariants) {
     } else {
       image.style.top = "5px";
       image.style.left = "5px";
-      ratio = image.width / (window.innerWidth - 85);
-      var cHeight = Math.max($("#cover").height() - 10, window.innerHeight / 2);
-      image.style.width = window.innerWidth - 85;
+      ratio = image.width / (window.innerWidth - 10);
+      // Ensure that we start out with a reasonable size.
+      if ($("#cover").height() < window.innerHeight / 3)
+	$("#cover").css("height", window.innerHeight / 2 + "px");
+      cHeight = $("#cover").height() + 10;
+      image.style.width = window.innerWidth - 10;
       image.style.height = "";
       if (image.height / ratio > cHeight) {
 	image.style.width = "";
 	image.style.height = cHeight;
 	setTimeout(function() {
-	  var newHeight = $("#cover").height();
+	  var newHeight = $("#cover").height() + 10;
 	  if (newHeight < cHeight)
-	    $(image).animate({height: newHeight}, 80);
+	    $(image).animate({height: newHeight + 30}, 80);
 	}, 1);
       }
       $("#cover").css("height", window.innerHeight / 2 + "px");
