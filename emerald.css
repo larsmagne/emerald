@@ -279,6 +279,9 @@ td#text:hover:after {
     border-radius: 9px;
     background: linear-gradient(to bottom, #f05050 0%, #903030 100%);
   }
+  td#variant-comics {
+    padding-bottom: 40px;
+  }
 
 }
 
