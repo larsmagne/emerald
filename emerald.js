@@ -112,7 +112,7 @@ function display(comic, image, noPush, noVariants) {
     } else {
       image.style.top = "5px";
       image.style.left = "5px";
-      ratio = image.width / (window.innerWidth - 10);
+      ratio = image.width / (window.innerWidth - 15);
       var scale = 2;
       // On smaller devices, use proportionally larger parts of the
       // screen for the cover.
