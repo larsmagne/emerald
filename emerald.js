@@ -13,6 +13,12 @@ function startUp() {
     // when it's brought back from sleep.
     document.addEventListener("resume", function() {
     }, false);
+    var cur = localStorage.getItem("current");
+    if (cur) {
+      cur = cur.split(/,/);
+      emeraldDate = cur[0];
+      current = cur[1];
+    }
   }
   var spinner = startSpinner();
   var match = window.location.href.match("month=([-0-9]+)");
@@ -58,6 +64,8 @@ function startUp() {
       var match = window.location.href.match("code=(.*)");
       if (match)
 	loadImageAndDisplay(data[currentIndex(match[1])]);
+      else if (phoneGap && current)
+	loadImageAndDisplay(data[currentIndex(current)]);
       else
 	loadImageAndDisplay(data[0]);
       addNavigation();
@@ -83,6 +91,9 @@ function display(comic, image, noPush, noVariants) {
       sep = "&";
     url = url + sep + "code=" + comic.code;
   }
+  // Record the current state so that we can return to it if the app
+  // is restarted.
+  localStorage.setItem("current", emeraldDate + "," + comic.code);
   if (! noPush)
     window.history.pushState(comic.code, comic.name, url);
   if (image) {
