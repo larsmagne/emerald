@@ -243,6 +243,8 @@ function loadImageAndDisplay(comic, noPush, noVariants) {
     var spinner = startSpinner();
 }
 
+var directionForward = true;
+
 function addNavigation() {
   $("#next").bind("click", gotoNext);
   $("#prev").bind("click", gotoPrev);
@@ -254,22 +256,26 @@ function addNavigation() {
     switch(e.which) {
     case 37: // left
     case 38: // up
+      directionForward = false;
       removeExplanation();
       gotoPrev();
       break;
 
     case 39: // right
     case 40: // down
+      directionForward = true;
       removeExplanation();
       gotoNext();
       break;
 
     case 33: // pgup
+      directionForward = false;
       removeExplanation();
       gotoPrevPublisher();
       break;
 
     case 34: // pgdown
+      directionForward = true;
       removeExplanation();
       gotoNextPublisher();
       break;
@@ -370,17 +376,33 @@ function gotoPrevPublisher() {
 
 function preload() {
   var len = comics.length;
-  for (var i = 0; i < len; i++) {
-    if (comics[i]["code"] == current) {
-      var remaining = 10;
-      while (remaining > 0 && i < len) {
-	i++;
-	if (wanted(comics[i])) {
-	  preloadImage(comics[i]);
-	  remaining--;
-	}
-      }
-      return;
+  var start = currentIndex();
+  var i = start;
+  var remaining = 10;
+  while (remaining > 0 && i < len && i > 0) {
+    // Preload in the direction the user is moving.
+    if (directionForward)
+      i++;
+    else
+      i--;
+    if (wanted(comics[i])) {
+      preloadImage(comics[i]);
+      remaining--;
+    }
+  }
+  // Also preload the next (or prev) publisher.
+  remaining = 3;
+  i = start;
+  while (remaining > 0 && i < len && i > 0) {
+    // Preload in the direction the user is moving.
+    if (directionForward)
+      i++;
+    else
+      i--;
+    if (comics[start].publisher != comics[i].publisher &&
+	wanted(comics[i])) {
+      preloadImage(comics[i]);
+      remaining--;
     }
   }
 }
@@ -441,6 +463,7 @@ var preloadedImages = [];
 function preloadImage(comic) {
   if (! comic || ! imgUrl(comic) || preloadedImages[imgUrl(comic)])
     return;
+  console.log(comic.publisher);
   var image = document.createElement("img");
   image.onload = function() {
     preloadedImages[imgUrl(comic)] = [new Date(), image];
@@ -459,7 +482,7 @@ function mTime(d) {
 }
 
 function pruneImageCache() {
-  var size = 40;
+  var size = 100;
   var arr = [];
   var i = 0;
   for (var key in preloadedImages) {
