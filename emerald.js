@@ -243,7 +243,7 @@ function loadImageAndDisplay(comic, noPush, noVariants) {
     var spinner = startSpinner();
 }
 
-var directionForward = true;
+var userAction = "next";
 
 function addNavigation() {
   $("#next").bind("click", gotoNext);
@@ -256,26 +256,26 @@ function addNavigation() {
     switch(e.which) {
     case 37: // left
     case 38: // up
-      directionForward = false;
+      userAction = "prev";
       removeExplanation();
       gotoPrev();
       break;
 
     case 39: // right
     case 40: // down
-      directionForward = true;
+      userAction = "next";
       removeExplanation();
       gotoNext();
       break;
 
     case 33: // pgup
-      directionForward = false;
+      userAction = "prevPublisher";
       removeExplanation();
       gotoPrevPublisher();
       break;
 
     case 34: // pgdown
-      directionForward = true;
+      userAction = "nextPublisher";
       removeExplanation();
       gotoNextPublisher();
       break;
@@ -379,9 +379,13 @@ function preload() {
   var start = currentIndex();
   var i = start;
   var remaining = 10;
+  // If the user is using the "next publisher", then don't preload
+  // as much.
+  if (userAction == "prevPublisher" || userAction == "nextPublisher")
+    remaining = 2;
   while (remaining > 0 && i < len && i > 0) {
     // Preload in the direction the user is moving.
-    if (directionForward)
+    if (userAction == "next" || userAction == "nextPublisher")
       i++;
     else
       i--;
@@ -395,7 +399,7 @@ function preload() {
   i = start;
   while (remaining > 0 && i < len && i > 0) {
     // Preload in the direction the user is moving.
-    if (directionForward)
+    if (userAction == "next" || userAction == "nextPublisher")
       i++;
     else
       i--;
