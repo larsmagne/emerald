@@ -13,6 +13,8 @@ function startUp() {
     // when it's brought back from sleep.
     document.addEventListener("resume", function() {
     }, false);
+    document.addEventListener("pause", function() {
+    }, false);
     var cur = localStorage.getItem("current");
     if (cur) {
       cur = cur.split(/,/);
@@ -72,6 +74,8 @@ function startUp() {
       addPublishers();
       checkCategories();
       addMonths();
+      //localStorage.setItem("buys-" + emeraldDate, "");
+      curateList();
     }});
   $("#publisher").click(function() {
     toggleSpecialPublisher();
@@ -516,19 +520,30 @@ function pruneImageCache() {
 }
 
 function toggleBuy() {
-  var name = "buys-" + emeraldDate;
-  var buys = localStorage.getItem(name);
+  if ($("#buy")[0].checked) {
+    addBuy(current);
+  } else {
+    removeBuy(current);
+  }
+  setBuyColor();
+}
+
+function addBuy(code) {
+  var buys = localStorage.getItem("buys-" + emeraldDate);
   if (! buys)
     buys = "";
-  if ($("#buy")[0].checked) {
-    if (buys.length)
-      buys += ",";
-    buys += current;
-  } else {
-    buys = buys.replace(new RegExp(",?" + current, "g"), "");
-  }
-  localStorage.setItem(name, buys);
-  setBuyColor();
+  if (buys.length)
+    buys += ",";
+  buys += code;
+  localStorage.setItem("buys-" + emeraldDate, buys);
+}
+
+function removeBuy() {
+  var buys = localStorage.getItem("buys-" + emeraldDate);
+  if (! buys)
+    buys = "";
+  buys = buys.replace(new RegExp(",?" + current, "g"), "");
+  localStorage.setItem("buys-" + emeraldDate, buys);
 }
 
 function setBuy() {
@@ -581,7 +596,9 @@ function checkCategories () {
   changeCategory();
 }
 
-function colorbox(html) {
+function colorbox(html, buttonText, callback) {
+  if (! buttonText)
+    buttonText = "Close";
   var box = document.createElement("div");
   box.style.position = "fixed";
   box.style.left = "0px";
@@ -590,11 +607,15 @@ function colorbox(html) {
   box.style.width = window.innerWidth + "px";
   box.style.display = "block";
   box.className = "event-lightbox";
-  box.innerHTML = "<div class='inner-box'>" + html + "</div><div class='close'><span>Close</span></div>";
+  box.innerHTML = "<div class='inner-box'>" + html + "</div><div class='close'><span>" + buttonText + "</span></div>";
   document.body.appendChild(box);
   $(".close").bind("click", function() {
-    $(box).remove();
+    if (callback)
+      callback();
+    else
+      $(box).remove();
   });
+  return box;
 }
 
 function exportBuys() {
@@ -790,7 +811,7 @@ function rearrangeForMobile() {
   $("body").append($menu);
   if (phoneGap)
     $("table.actions").find("tbody").append($("<tr><td id='share'>Share</td></tr>"));
-  $("table.actions").find("tbody").append($("<tr><td id='close-menu'>Close</td></tr><tr><td id='menu-spacer'>&nbsp;</td></tr>"));
+  $("table.actions").find("tbody").append($("<tr><td id='close-menu'>Close</td></tr><tr><td id='curation'>Curate a Comic List</td></tr><tr><td id='menu-spacer'>&nbsp;</td></tr>"));
 
   $.map([creators, cover], function(elem) {
     var tr = document.createElement("tr");
@@ -836,6 +857,9 @@ function rearrangeForMobile() {
   $(".removable").remove();
   $("#close-menu").click(function() {
     closeMenu();
+  });
+  $("#curation").click(function() {
+    curateList();
   });
   $("#share").click(function() {
     shareBuyList();
@@ -952,4 +976,80 @@ function imgUrl(comic) {
     return false;
   return "http://goshenite.info/data/img/" + emeraldDate + "/" +
     comic.code + "-scale.jpg";
+}
+
+function curateList() {
+  var buys = localStorage.getItem("buys-" + emeraldDate);
+  if (! buys) {
+    colorbox("Nothing marked for buying");
+    return;
+  }
+  var html = "<form class='curation'><input type='text' id='user' size=40><textarea cols=40 rows=4 id='description'></textarea><table class='curation'>";
+  $.map(buys.split(","), function(code) {
+    if (! code)
+      return;
+    var comic = comics[currentIndex(code)];
+    if (! comic)
+      return;
+    html += "<tr><td><input type='checkbox' checked id='curate-" + code + "'><td>" +
+      comic.publisher + "<td>" + comic.name + "</tr>";
+  });
+  html += "</table>";
+  var box = colorbox(html, "Share your curated list", function() {
+    shareCuration(box);
+  });
+  // Allow scrolling.
+  box.style.position = "absolute";
+  $("table.curation").find(":checkbox").click(function() {
+    var code = this.id.replace(/curate-/, "");
+    console.log([code, this.checked]);
+    if (this.checked)
+      addBuy(code);
+    else
+      removeBuy(code);
+  });
+  
+  $("#user").val(localStorage.getItem("user"));
+  $("#description").val(localStorage.getItem("description"));
+}
+
+function shareCuration(box) {
+  // Initialize Firebase
+  var config = {
+    apiKey: "AIzaSyCM8Is-PliOBHlkYcPi9z_bq8RziBGvLWM",
+    authDomain: "goshenite-faf04.firebaseapp.com",
+    databaseURL: "https://goshenite-faf04.firebaseio.com",
+    projectId: "goshenite-faf04",
+    storageBucket: "",
+    messagingSenderId: "533960414840"
+  };
+  firebase.initializeApp(config);
+
+  firebase.auth().signInAnonymously()
+    .catch(function(error) {
+      console.log(error);
+    });
+
+  firebase.auth().onAuthStateChanged(function(user) {
+    if (user) {
+      // User is signed in.
+      var database = firebase.database();
+      var name = $("#user").val(),
+	  description = $("#description").val();
+      localStorage.setItem("user", name);
+      localStorage.setItem("description", description);
+      var data = [];
+      $.map(localStorage.getItem("buys-" + emeraldDate).split(","),
+	    function(code) {
+	      data.push({code: code, desc: ""});
+	    });
+      database.ref('curation/' + user.uid + "/" + emeraldDate).set({
+	user: name,
+	description: description,
+	comics: data
+      });
+    }
+    $(box).remove();
+    colorbox("Your list has now been made public to all other Goshenite users.");
+  });
 }
