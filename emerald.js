@@ -842,6 +842,12 @@ function rearrangeForMobile() {
     $(barCont).css({"top": window.innerHeight - 45 + "px",
 		    "display": "block"});
   });
+  // Ensure that the navbar is at the bottom even if the browser
+  // decides to change the size of the window, which happens regularly
+  // on Android when scrolling up/down.
+  window.addEventListener('resize', function(event){
+    $(barCont).css({"top": window.innerHeight - 45 + "px"});
+  });
 }
 
 function waitForWebfonts(font, weight, callback) {
