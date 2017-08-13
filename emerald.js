@@ -153,7 +153,7 @@ function display(comic, image, noPush, noVariants) {
       }, 1);
       
       var expanded = false;
-      if (image.height / ratio < cHeight)
+      if (image.height / ratio > cHeight)
 	var fullSize = [image.width / ratio - 15, window.innerHeight - 15];
       else
 	fullSize = [window.innerWidth - 15, image.height / ratio - 15];
