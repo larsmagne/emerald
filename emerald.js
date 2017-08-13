@@ -463,7 +463,6 @@ var preloadedImages = [];
 function preloadImage(comic) {
   if (! comic || ! imgUrl(comic) || preloadedImages[imgUrl(comic)])
     return;
-  console.log(comic.publisher);
   var image = document.createElement("img");
   image.onload = function() {
     preloadedImages[imgUrl(comic)] = [new Date(), image];
