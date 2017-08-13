@@ -261,8 +261,8 @@ td#text:hover:after {
     display: none;
     width: 100%;
     position: fixed;
-    left: 0px;
-    top: 0px;
+    bottom: 0;
+    height: 45px;
   }
   div.navigation-bar div {
     width: 100%;
