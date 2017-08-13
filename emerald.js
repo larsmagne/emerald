@@ -6,6 +6,8 @@ var categories = ["variants", "resolicitations", "relistings",
 		  "ones", "gns", "other"];
 var activeCategories = false;
 var phoneGap = false;
+var curationName = false;
+var curationArr = false;
 
 function startUp() {
   if (phoneGap) {
@@ -75,8 +77,8 @@ function startUp() {
       checkCategories();
       addMonths();
       //localStorage.setItem("buys-" + emeraldDate, "");
-      curateList();
-      //listCurations();
+      //curateList();
+      listCurations();
     }});
   $("#publisher").click(function() {
     toggleSpecialPublisher();
@@ -186,6 +188,14 @@ function display(comic, image, noPush, noVariants) {
 	       100);
   } else {
     $("#cover").empty();
+  }
+  if (curationArr) {
+    $("#cover").append($("<span class=curation>Curated by " + curationName +
+			 "<i class='material-icons close-curation'>close</i></span>"));
+    $(".close-curation").click(function() {
+      curationArr = false;
+      loadImageAndDisplay(comics[0]);
+    });
   }
   var old = $("#publisher").html();
   var publisher = comic.publisher;
@@ -430,6 +440,8 @@ function preload() {
 function wanted(comic) {
   if (! comic)
     return false;
+  if (curationArr && curatedComic(comic))
+    return true;
   if ($.inArray("variants", activeCategories) == -1 &&
       comic.variant)
     return false;
@@ -1078,8 +1090,38 @@ function listCurations() {
   var ref = firebase.database().ref("curation");
   ref.once("value")
     .then(function(snapshot) {
+      var $html = $("<table class='curations'><tr><th>Curator<th>Description<th>Comics</tr>");
       snapshot.forEach(function(child) {
-	console.log(child.child());
+	console.log(child.child("user").val());
+	if (child.child("month").val() == emeraldDate) {
+	  var $tr = $("<tr><td>" + child.child("user").val() + "<td>" +
+		      child.child("description").val() + "<td class='count'>" +
+		      child.child("comics").val().length +
+		      "</tr>");
+	  var choose = function(child) {
+	    return function() {
+	      chooseCuration(child.child("user").val(),
+			   child.child("comics").val());
+	    };
+	  };
+	  $tr.click(choose(child));
+	  $html.append($tr);
+	}
       });
+      $("body").append($html);
     });
+}
+
+function chooseCuration(name, arr) {
+  $("table.curations").remove();
+  curationName = name;
+  curationArr = arr;
+  loadImageAndDisplay(comics[currentIndex(arr[0].code)]);
+}
+
+function curatedComic(comic) {
+  for (var i = 0; i < curationArr.length; i++)
+    if (comic.code = curationArr[i].code)
+      return true;
+  return false;
 }

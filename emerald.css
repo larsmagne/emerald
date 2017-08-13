@@ -305,3 +305,39 @@ td#text:hover:after {
   word-wrap: normal;
   direction: ltr;
 }
+
+i.close-curation {
+  font-size: 12px;
+  margin-left: 5px;
+}
+
+table.curations {
+  top: 0px;
+  left: 0px;
+  width: 100%;
+  position: absolute;
+  background: blue;
+}
+
+table.curations th {
+  background: #e0e0e0;
+  height: 20px;
+}
+
+table.curations td {
+  height: 40px;
+  padding: 10px;
+  margin: 2px;
+  border-radius: 9px;
+  background: #a0a0e0;
+  font-weight: bold;
+}
+
+table.curations td.count {
+  text-align: right;
+}
+
+span.curation {
+  font-size: 10px;
+  float: right;
+}
