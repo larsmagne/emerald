@@ -77,7 +77,7 @@ function startUp() {
       checkCategories();
       addMonths();
       //localStorage.setItem("buys-" + emeraldDate, "");
-      curateList();
+      //curateList();
       //listCurations();
     }});
   $("#publisher").click(function() {
@@ -1018,7 +1018,6 @@ function curateList() {
   box.style.position = "absolute";
   $("table.curation").find(":checkbox").click(function() {
     var code = this.id.replace(/curate-/, "");
-    console.log([code, this.checked]);
     if (this.checked)
       addBuy(code);
     else
@@ -1074,7 +1073,6 @@ function shareCuration(box) {
       ref.once("value")
 	.then(function(snapshot) {
 	  snapshot.forEach(function(child) {
-	    console.log([child.child("author").val(), user.uid]);
 	    if (child.child("author").val() == user.uid &&
 		child.child("month").val() == emeraldDate)
 	      key = child.key;
@@ -1102,7 +1100,6 @@ function listCurations() {
     .then(function(snapshot) {
       var $html = $("<table class='curations'><tr><th>Curator<th>Description<th>Comics</tr>");
       snapshot.forEach(function(child) {
-	console.log(child.child("user").val());
 	if (child.child("month").val() == emeraldDate) {
 	  var $tr = $("<tr><td>" + child.child("user").val() + "<td>" +
 		      child.child("description").val() + "<td class='count'>" +
