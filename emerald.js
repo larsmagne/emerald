@@ -76,6 +76,7 @@ function startUp() {
       addMonths();
       //localStorage.setItem("buys-" + emeraldDate, "");
       curateList();
+      //listCurations();
     }});
   $("#publisher").click(function() {
     toggleSpecialPublisher();
@@ -597,8 +598,6 @@ function checkCategories () {
 }
 
 function colorbox(html, buttonText, callback) {
-  if (! buttonText)
-    buttonText = "Close";
   var box = document.createElement("div");
   box.style.position = "fixed";
   box.style.left = "0px";
@@ -607,13 +606,15 @@ function colorbox(html, buttonText, callback) {
   box.style.width = window.innerWidth + "px";
   box.style.display = "block";
   box.className = "event-lightbox";
-  box.innerHTML = "<div class='inner-box'>" + html + "</div><div class='close'><span>" + buttonText + "</span></div>";
+  box.innerHTML = "<div class='inner-box'>" + html + "</div><div class='close' id='close'><span>Close</span></div>" +
+    (buttonText? "<div class='close' id='callback'><span>" + buttonText + "</span></div>": "");
   document.body.appendChild(box);
-  $(".close").bind("click", function() {
-    if (callback)
+  if (callback)
+    $("#callback").bind("click", function() {
       callback();
-    else
-      $(box).remove();
+    });
+  $("#close").bind("click", function() {
+    $(box).remove();
   });
   return box;
 }
@@ -811,7 +812,7 @@ function rearrangeForMobile() {
   $("body").append($menu);
   if (phoneGap)
     $("table.actions").find("tbody").append($("<tr><td id='share'>Share</td></tr>"));
-  $("table.actions").find("tbody").append($("<tr><td id='close-menu'>Close</td></tr><tr><td id='curation'>Curate a Comic List</td></tr><tr><td id='menu-spacer'>&nbsp;</td></tr>"));
+  $("table.actions").find("tbody").append($("<tr><td id='close-menu'>Close</td></tr><tr><td id='curation'>Curate a Comic List</td></tr><tr><td id='see-curation'>See Curated Lists</td></tr><tr><td id='menu-spacer'>&nbsp;</td></tr>"));
 
   $.map([creators, cover], function(elem) {
     var tr = document.createElement("tr");
@@ -860,6 +861,9 @@ function rearrangeForMobile() {
   });
   $("#curation").click(function() {
     curateList();
+  });
+  $("#see-curation").click(function() {
+    listCurations();
   });
   $("#share").click(function() {
     shareBuyList();
@@ -1013,8 +1017,12 @@ function curateList() {
   $("#description").val(localStorage.getItem("description"));
 }
 
-function shareCuration(box) {
-  // Initialize Firebase
+var firebaseInit = false;
+
+function initFirebase() {
+  if (firebaseInit)
+    return;
+  
   var config = {
     apiKey: "AIzaSyCM8Is-PliOBHlkYcPi9z_bq8RziBGvLWM",
     authDomain: "goshenite-faf04.firebaseapp.com",
@@ -1024,7 +1032,11 @@ function shareCuration(box) {
     messagingSenderId: "533960414840"
   };
   firebase.initializeApp(config);
+  firebaseInit = true;
+}
 
+function shareCuration(box) {
+  initFirebase();
   firebase.auth().signInAnonymously()
     .catch(function(error) {
       console.log(error);
@@ -1036,6 +1048,9 @@ function shareCuration(box) {
       var database = firebase.database();
       var name = $("#user").val(),
 	  description = $("#description").val();
+      console.log(name);
+      if (! name)
+	return;
       localStorage.setItem("user", name);
       localStorage.setItem("description", description);
       var data = [];
@@ -1043,7 +1058,11 @@ function shareCuration(box) {
 	    function(code) {
 	      data.push({code: code, desc: ""});
 	    });
-      database.ref('curation/' + user.uid + "/" + emeraldDate).set({
+      var postRef = database.ref('curation');
+      var newPostRef = postRef.push();
+      newPostRef.set({
+	author: user.uid,
+	month: emeraldDate,
 	user: name,
 	description: description,
 	comics: data
@@ -1052,4 +1071,15 @@ function shareCuration(box) {
     $(box).remove();
     colorbox("Your list has now been made public to all other Goshenite users.");
   });
+}
+
+function listCurations() {
+  initFirebase();
+  var ref = firebase.database().ref("curation");
+  ref.once("value")
+    .then(function(snapshot) {
+      snapshot.forEach(function(child) {
+	console.log(child.child());
+      });
+    });
 }
