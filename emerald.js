@@ -77,8 +77,8 @@ function startUp() {
       checkCategories();
       addMonths();
       //localStorage.setItem("buys-" + emeraldDate, "");
-      //curateList();
-      listCurations();
+      curateList();
+      //listCurations();
     }});
   $("#publisher").click(function() {
     toggleSpecialPublisher();
@@ -1060,7 +1060,6 @@ function shareCuration(box) {
       var database = firebase.database();
       var name = $("#user").val(),
 	  description = $("#description").val();
-      console.log(name);
       if (! name)
 	return;
       localStorage.setItem("user", name);
@@ -1070,18 +1069,29 @@ function shareCuration(box) {
 	    function(code) {
 	      data.push({code: code, desc: ""});
 	    });
-      var postRef = database.ref('curation');
-      var newPostRef = postRef.push();
-      newPostRef.set({
-	author: user.uid,
-	month: emeraldDate,
-	user: name,
-	description: description,
-	comics: data
-      });
+      var ref = database.ref("curation");
+      var key = false;
+      ref.once("value")
+	.then(function(snapshot) {
+	  snapshot.forEach(function(child) {
+	    console.log([child.child("author").val(), user.uid]);
+	    if (child.child("author").val() == user.uid &&
+		child.child("month").val() == emeraldDate)
+	      key = child.key;
+	  });
+	  if (! key)
+	    key = database.ref('curation').push().key;
+	  ref.child(key).set({
+	    author: user.uid,
+	    month: emeraldDate,
+	    user: name,
+	    description: description,
+	    comics: data
+	  });
+	  $(box).remove();
+	  colorbox("Your list has now been made public to all other Goshenite users.");
+	});
     }
-    $(box).remove();
-    colorbox("Your list has now been made public to all other Goshenite users.");
   });
 }
 
