@@ -9,8 +9,10 @@ var phoneGap = false;
 
 function startUp() {
   if (phoneGap) {
-    //$.support.cors = true;
-    //StatusBar.overlaysWebView(false);
+    // Add a dummy "resume" handler so that the app doesn't restart
+    // when it's brought back from sleep.
+    document.addEventListener("resume", function() {
+    }, false);
   }
   var spinner = startSpinner();
   var match = window.location.href.match("month=([-0-9]+)");
