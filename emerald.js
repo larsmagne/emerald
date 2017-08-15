@@ -193,8 +193,13 @@ function display(comic, image, noPush, noVariants) {
     $("#cover").empty();
   }
   if (curationArr) {
+    var note = "";
+    for (var i = 0; i < curationArr.length; i++)
+      if (curationArr[i].code == comic.code)
+	note = curationArr[i].desc;
     $("#cover").append($("<span class=curation>Curated by " + curationName +
-			 "<i class='material-icons close-curation'>close</i></span>"));
+			 "<i class='material-icons close-curation'>close</i><br>" +
+			 note + "</span>"));
     $(".close-curation").click(function() {
       curationArr = false;
       loadImageAndDisplay(comics[0]);
@@ -280,7 +285,8 @@ function addNavigation() {
   $("#nextPublisher").bind("click", gotoNextPublisher);
   $("#prevPublisher").bind("click", gotoPrevPublisher);
   $(document).keydown(function(e) {
-    if (document.activeElement.nodeName == "SELECT")
+    if (document.activeElement.nodeName == "SELECT" ||
+	document.activeElement.nodeName == "TEXTAREA")
       return;
     switch(e.which) {
     case 37: // left
@@ -338,6 +344,10 @@ function addNavigation() {
     closeMenu();
     listCurations();
   });
+  $("#note").click(function() {
+    closeMenu();
+    addNote();
+  });
 }
 
 function currentIndex(code) {
@@ -374,7 +384,6 @@ function gotoPrev() {
   var i = currentIndex();
   while (i-- > 0) {
     if (wanted(comics[i])) {
-      console.log([i, comics[i]]);
       loadImageAndDisplay(comics[i]);
       return;
     }
@@ -642,7 +651,6 @@ function colorbox(html, buttonText, callback) {
   document.body.appendChild(box);
   if (callback)
     $("#callback").bind("click", function() {
-      console.log("zop");
       callback();
     });
   $("#close").bind("click", function() {
@@ -1025,8 +1033,11 @@ function curateList() {
     var comic = comics[currentIndex(code)];
     if (! comic)
       return;
+    var note = localStorage.getItem("note-" + comic.code);
+    if (! note)
+      note = "";
     html += "<tr><td><input type='checkbox' checked id='curate-" + code + "'><td>" +
-      comic.publisher + "<td>" + comic.name + "</tr>";
+      comic.publisher + "<td>" + comic.name + "<td>" + note + "</tr>";
   });
   html += "</table>";
   var box = colorbox(html, "Share your curated list", function() {
@@ -1084,8 +1095,12 @@ function shareCuration(box) {
       var data = [];
       $.map(localStorage.getItem("buys-" + emeraldDate).split(","),
 	    function(code) {
-	      if (code)
-		data.push({code: code, desc: ""});
+	      if (code) {
+		var note = localStorage.getItem("note-" + code);
+		if (! note)
+		  note = "";
+		data.push({code: code, desc: note});
+	      }
 	    });
       var ref = database.ref("curation");
       var key = false;
@@ -1159,4 +1174,16 @@ function curatedComic(comic) {
     if (comic.code == curationArr[i].code)
       return true;
   return false;
+}
+
+function addNote() {
+  var id = "note-" + current;
+  var note = localStorage.getItem(id);
+  if (! note)
+    note = "";
+  $("body").append($("<div class='note'><textarea cols=40 rows=4 id='text-note' placeholder='A note on this comic that will be shared with your curation'>" + note + "</textarea><div class=close id='close-note'><span>Close</span></div>"));
+  $("#close-note").click(function() {
+    localStorage.setItem(id, $("#text-note").val());
+    $("div.note").remove();
+  });
 }

@@ -117,7 +117,7 @@ td.first-publisher {
 input[type=checkbox] {
   margin-right: 1ex;
 }
-td.about, td#curation, td#see-curation {
+td.about, td#curation, td#see-curation, td#note {
   text-align: center;
   font-weight: bold;
 }
@@ -382,4 +382,22 @@ div.curations {
   position: absolute;
   top: 0;
   left: 0;
+}
+
+div.note {
+  background: linear-gradient(to bottom, #f05050 0%, #903030 100%);
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  vertical-align: middle;
+}
+
+div.note textarea {
+  border-radius: 5px;
+  width: 100%;
+  font-size: 12px;
+  font-family: arial, sans-serif;
+  padding: 8px;
 }
