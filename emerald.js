@@ -1146,11 +1146,9 @@ function chooseCuration(name, arr) {
   for (var i = 0; i < comics.length; i++)
     rank[comics[i].code] = i;
   curationArr = arr;
-  console.log(curationArr[0]);
-  curationArr.sort(function(code1, code2){
-    return rank[code2] - rank[code1];
+  curationArr.sort(function(elem1, elem2){
+    return rank[elem1.code] - rank[elem2.code];
   });
-  console.log(curationArr[0]);
   loadImageAndDisplay(comics[currentIndex(curationArr[0].code)]);
 }
 
