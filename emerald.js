@@ -355,6 +355,7 @@ function gotoNext() {
       return;
     }
   }
+  colorbox("No next comic");
 }
 
 function gotoPrev() {
@@ -363,12 +364,14 @@ function gotoPrev() {
     return;
   var len = comics.length;
   var i = currentIndex();
-  while (--i > 0) {
+  while (i-- > 0) {
     if (wanted(comics[i])) {
+      console.log([i, comics[i]]);
       loadImageAndDisplay(comics[i]);
       return;
     }
   }
+  colorbox("No previous comic");
 }
 
 function gotoNextPublisher() {
@@ -381,6 +384,7 @@ function gotoNextPublisher() {
       return;
     }
   }
+  colorbox("No next publisher");
 }
 
 function gotoPrevPublisher() {
@@ -390,7 +394,7 @@ function gotoPrevPublisher() {
   while (--i > 0) {
     if (wanted(comics[i]) && publisher != comics[i].publisher) {
       publisher = comics[i].publisher;
-      while (--i > 0) {
+      while (i-- > 0) {
 	if (wanted(comics[i]) && publisher != comics[i].publisher) {
 	  i++;
 	  while (! wanted(comics[i]) && i < comics.length)
@@ -401,6 +405,7 @@ function gotoPrevPublisher() {
       }
     }
   }
+  colorbox("No previous publisher");
 }
 
 function preload() {
@@ -412,7 +417,7 @@ function preload() {
   // as much.
   if (userAction == "prevPublisher" || userAction == "nextPublisher")
     remaining = 2;
-  while (remaining > 0 && i < len && i > 0) {
+  while (remaining > 0 && i < len - 1 && i > 0) {
     // Preload in the direction the user is moving.
     if (userAction == "next" || userAction == "nextPublisher")
       i++;
@@ -426,7 +431,7 @@ function preload() {
   // Also preload the next (or prev) publisher.
   remaining = 3;
   i = start;
-  while (remaining > 0 && i < len && i > 0) {
+  while (remaining > 0 && i < len - 1 && i > 0) {
     // Preload in the direction the user is moving.
     if (userAction == "next" || userAction == "nextPublisher")
       i++;
@@ -443,8 +448,11 @@ function preload() {
 function wanted(comic) {
   if (! comic)
     return false;
-  if (curationArr && curatedComic(comic))
-    return true;
+  // If we have a curation going on, we only want the curated comics
+  // and nothing else.
+  if (curationArr)
+    return curatedComic(comic);
+  
   if ($.inArray("variants", activeCategories) == -1 &&
       comic.variant)
     return false;
@@ -1116,7 +1124,7 @@ function listCurations() {
 	  var choose = function(child) {
 	    return function() {
 	      chooseCuration(child.child("user").val(),
-			   child.child("comics").val());
+			     child.child("comics").val());
 	    };
 	  };
 	  $tr.click(choose(child));
@@ -1128,7 +1136,7 @@ function listCurations() {
 }
 
 function chooseCuration(name, arr) {
-  $("table.curations").remove();
+  $("div.curations").fadeOut(200);
   curationName = name;
   curationArr = arr;
   loadImageAndDisplay(comics[currentIndex(arr[0].code)]);
@@ -1136,7 +1144,7 @@ function chooseCuration(name, arr) {
 
 function curatedComic(comic) {
   for (var i = 0; i < curationArr.length; i++)
-    if (comic.code = curationArr[i].code)
+    if (comic.code == curationArr[i].code)
       return true;
   return false;
 }
