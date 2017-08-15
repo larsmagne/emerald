@@ -1164,7 +1164,7 @@ function listCurations() {
 }
 
 function chooseCuration(name, arr) {
-  $("div.curations").fadeOut(200);
+  $("div.curations").remove();
   curationName = name;
   // Sort the curations so that we start with the first one and
   // can proceed with the "next" button.
