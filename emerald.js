@@ -331,9 +331,11 @@ function addNavigation() {
   if (localStorage.getItem("explanation"))
     removeExplanation();
   $("#curation").click(function() {
+    closeMenu();
     curateList();
   });
   $("#see-curation").click(function() {
+    closeMenu();
     listCurations();
   });
 }
@@ -640,6 +642,7 @@ function colorbox(html, buttonText, callback) {
   document.body.appendChild(box);
   if (callback)
     $("#callback").bind("click", function() {
+      console.log("zop");
       callback();
     });
   $("#close").bind("click", function() {
@@ -889,14 +892,6 @@ function rearrangeForMobile() {
   $(".removable").remove();
   $("#close-menu").click(function() {
     closeMenu();
-  });
-  $("#curation").click(function() {
-    closeMenu();
-    curateList();
-  });
-  $("#see-curation").click(function() {
-    closeMenu();
-    listCurations();
   });
   $("#share").click(function() {
     shareBuyList();
