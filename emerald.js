@@ -81,7 +81,7 @@ function startUp() {
       //listCurations();
       //showMenu();
       //curateList();
-      listCurations();
+      //listCurations();
     }});
   $("#publisher").click(function() {
     toggleSpecialPublisher();
@@ -1102,6 +1102,7 @@ function shareCuration(box) {
 	    month: emeraldDate,
 	    user: name,
 	    description: description,
+	    approved: false,
 	    comics: data
 	  });
 	  $(box).remove();
