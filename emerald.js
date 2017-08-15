@@ -1131,8 +1131,12 @@ function shareCuration(box) {
 function listCurations() {
   initFirebase();
   var ref = firebase.database().ref("curation");
+  var $cont = $("<div class='curations'>");
+  $("body").append($cont);
+  var spinner = startSpinner();
   ref.once("value")
     .then(function(snapshot) {
+      removeSpinner(spinner);
       var $html = $("<table class='curations'><tr><th>Curator<th>Description<th>Comics</tr>");
       snapshot.forEach(function(child) {
 	if (child.child("month").val() == emeraldDate) {
@@ -1150,7 +1154,12 @@ function listCurations() {
 	  $html.append($tr);
 	}
       });
-      $("body").append($("<div class='curations'>").append($html));
+      $html.append($("</table>"));
+      $cont.append($html);
+      $cont.append($("<div class=close id='close-see-curations'><span>Close</span></div>"));
+      $("#close-see-curations").click(function() {
+	$("div.curations").remove();
+      });
     });
 }
 

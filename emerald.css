@@ -316,10 +316,7 @@ i.close-curation {
 }
 
 table.curations {
-  top: 0px;
-  left: 0px;
   width: 100%;
-  position: absolute;
   border-collapse: collapse;
   margin: 5px;
 }
