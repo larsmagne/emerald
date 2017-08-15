@@ -751,7 +751,9 @@ function disablePublishers() {
 }
 
 function disablePublisher(publisher, $select, want) {
-  var $option = $select.find("option[value='" + publisher + "']");
+  var $option = $select.find("option[value='" +
+			     publisher.replace(/'/, "\\'") +
+			     "']");
   if (want)
     $option.removeAttr("disabled");
   else
@@ -1138,8 +1140,18 @@ function listCurations() {
 function chooseCuration(name, arr) {
   $("div.curations").fadeOut(200);
   curationName = name;
+  // Sort the curations so that we start with the first one and
+  // can proceed with the "next" button.
+  var rank = [];
+  for (var i = 0; i < comics.length; i++)
+    rank[comics[i].code] = i;
   curationArr = arr;
-  loadImageAndDisplay(comics[currentIndex(arr[0].code)]);
+  console.log(curationArr[0]);
+  curationArr.sort(function(code1, code2){
+    return rank[code2] - rank[code1];
+  });
+  console.log(curationArr[0]);
+  loadImageAndDisplay(comics[currentIndex(curationArr[0].code)]);
 }
 
 function curatedComic(comic) {
