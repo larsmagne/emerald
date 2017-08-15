@@ -336,7 +336,6 @@ function addNavigation() {
   $("#see-curation").click(function() {
     listCurations();
   });
-  curateList();
 }
 
 function currentIndex(code) {
