@@ -320,7 +320,8 @@ table.curations {
   left: 0px;
   width: 100%;
   position: absolute;
-  background: blue;
+  border-collapse: collapse;
+  margin: 5px;
 }
 
 table.curations th {
@@ -332,9 +333,8 @@ table.curations td {
   height: 40px;
   padding: 10px;
   margin: 2px;
-  border-radius: 9px;
-  background: #a0a0e0;
   font-weight: bold;
+  background: linear-gradient(to bottom, #c0c0c0 0%, #b0b0b0 100%);
 }
 
 table.curations td.count {
@@ -373,4 +373,13 @@ table.curation tr {
 table.curation td {
   background: #b0b0b0;
   padding: 5px;
+}
+
+div.curations {
+  background: linear-gradient(to bottom, #f05050 0%, #903030 100%);
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
 }

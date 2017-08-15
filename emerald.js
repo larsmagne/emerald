@@ -80,7 +80,8 @@ function startUp() {
       //curateList();
       //listCurations();
       //showMenu();
-      curateList();
+      //curateList();
+      listCurations();
     }});
   $("#publisher").click(function() {
     toggleSpecialPublisher();
@@ -1122,7 +1123,7 @@ function listCurations() {
 	  $html.append($tr);
 	}
       });
-      $("body").append($html);
+      $("body").append($("<div class='curations'>").append($html));
     });
 }
 
