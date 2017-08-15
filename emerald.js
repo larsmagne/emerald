@@ -79,6 +79,8 @@ function startUp() {
       //localStorage.setItem("buys-" + emeraldDate, "");
       //curateList();
       //listCurations();
+      //showMenu();
+      curateList();
     }});
   $("#publisher").click(function() {
     toggleSpecialPublisher();
@@ -824,7 +826,7 @@ function rearrangeForMobile() {
   $("body").append($menu);
   if (phoneGap)
     $("table.actions").find("tbody").append($("<tr><td id='share'>Share</td></tr>"));
-  $("table.actions").find("tbody").append($("<tr><td id='close-menu'>Close</td></tr><tr><td id='curation'>Curate a Comic List</td></tr><tr><td id='see-curation'>See Curated Lists</td></tr><tr><td id='menu-spacer'>&nbsp;</td></tr>"));
+  $("table.actions").find("tbody").append($("<tr><td id='curation'>Curate a Comic List</td></tr><tr><td id='see-curation'>See Curated Lists</td></tr><tr><td id='close-menu'>Close</td></tr>"));
 
   $.map([creators, cover], function(elem) {
     var tr = document.createElement("tr");
@@ -872,9 +874,11 @@ function rearrangeForMobile() {
     closeMenu();
   });
   $("#curation").click(function() {
+    closeMenu();
     curateList();
   });
   $("#see-curation").click(function() {
+    closeMenu();
     listCurations();
   });
   $("#share").click(function() {
@@ -938,11 +942,13 @@ function waitForWebfonts(font, weight, callback) {
 }
 
 function showMenu() {
-  $("#menu").fadeIn(100);
+  $("div.navigation-bar").fadeOut(200);
+  $("#menu").fadeIn(200);
 }
 
 function closeMenu() {
-  $("#menu").fadeOut(100);
+  $("#menu").fadeOut(200);
+  $("div.navigation-bar").fadeIn(200);
 }
 
 function shareBuyList() {
@@ -1000,7 +1006,7 @@ function curateList() {
     colorbox("Nothing marked for buying");
     return;
   }
-  var html = "<form class='curation'><input type='text' id='user' size=40><textarea cols=40 rows=4 id='description'></textarea><table class='curation'>";
+  var html = "<form class='curation'><input type='text' id='user' size=40 placeholder='Your name'><textarea cols=40 rows=4 id='description' placeholder='A description of your list'></textarea><table class='curation'>";
   $.map(buys.split(","), function(code) {
     if (! code)
       return;
@@ -1066,7 +1072,8 @@ function shareCuration(box) {
       var data = [];
       $.map(localStorage.getItem("buys-" + emeraldDate).split(","),
 	    function(code) {
-	      data.push({code: code, desc: ""});
+	      if (code)
+		data.push({code: code, desc: ""});
 	    });
       var ref = database.ref("curation");
       var key = false;

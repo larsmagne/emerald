@@ -233,14 +233,18 @@ td#text:hover:after {
     height: 100%;
     background: black;
   }
+  table.actions {
+    background: linear-gradient(to bottom, #f05050 0%, #903030 100%);
+    padding: 10px;
+    border: 0px;
+  }
   table.actions td {
     text-align: center;
     vertical-align: middle;
+    border-radius: 5px;
+    background: linear-gradient(to bottom, #c0c0c0 0%, #b0b0b0 100%);
   }
-  td#close-menu {
-    font-weight: bold;
-  }
-  td#share {
+  td#close-menu, td#share, td#curation, td#see-curation {
     font-weight: bold;
   }
   td.about {
@@ -340,4 +344,33 @@ table.curations td.count {
 span.curation {
   font-size: 10px;
   float: right;
+}
+
+form.curation textarea {
+  border-radius: 5px;
+  width: 100%;
+  font-size: 12px;
+  font-family: arial, sans-serif;
+  padding: 8px;
+}
+
+form.curation input[type=text] {
+  font-family: arial, sans-serif;
+  font-size: 12px;
+  width: 100%;
+}
+
+table.curation {
+  margin-top: 10px;
+  width: 100%;
+  background: #e0e0e0;
+}
+
+table.curation tr {
+  vertical-align: middle;
+}
+
+table.curation td {
+  background: #b0b0b0;
+  padding: 5px;
 }
