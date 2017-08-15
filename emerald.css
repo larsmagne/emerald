@@ -7,7 +7,6 @@ body {
   display: none; 
 }
 div.event-lightbox {
-  padding: 50px;
   background: linear-gradient(to bottom, #f05050 0%, #903030 100%);
   color: black;
 }
@@ -118,8 +117,9 @@ td.first-publisher {
 input[type=checkbox] {
   margin-right: 1ex;
 }
-td.about {
+td.about, td#curation, td#see-curation {
   text-align: center;
+  font-weight: bold;
 }
 a {
   color: black;

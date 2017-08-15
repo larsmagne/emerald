@@ -330,6 +330,13 @@ function addNavigation() {
   });
   if (localStorage.getItem("explanation"))
     removeExplanation();
+  $("#curation").click(function() {
+    curateList();
+  });
+  $("#see-curation").click(function() {
+    listCurations();
+  });
+  curateList();
 }
 
 function currentIndex(code) {
@@ -837,7 +844,7 @@ function rearrangeForMobile() {
   $("body").append($menu);
   if (phoneGap)
     $("table.actions").find("tbody").append($("<tr><td id='share'>Share</td></tr>"));
-  $("table.actions").find("tbody").append($("<tr><td id='curation'>Curate a Comic List</td></tr><tr><td id='see-curation'>See Curated Lists</td></tr><tr><td id='close-menu'>Close</td></tr>"));
+  $("table.actions").find("tbody").append($("<tr><td id='close-menu'>Close</td></tr>"));
 
   $.map([creators, cover], function(elem) {
     var tr = document.createElement("tr");
@@ -1106,7 +1113,7 @@ function shareCuration(box) {
 	    comics: data
 	  });
 	  $(box).remove();
-	  colorbox("Your list has now been made public to all other Goshenite users.");
+	  colorbox("Your list will be made public to all other Goshenite users after approval.");
 	});
     }
   });
