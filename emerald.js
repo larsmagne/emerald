@@ -196,7 +196,7 @@ function display(comic, image, noPush, noVariants) {
     var note = "";
     for (var i = 0; i < curationArr.length; i++)
       if (curationArr[i].code == comic.code)
-	note = curationArr[i].desc;
+	note = curationArr[i].desc.replace(/[<>]/, "");
     $("#cover").append($("<span class=curation>Curated by " + curationName +
 			 "<i class='material-icons close-curation'>close</i><br>" +
 			 note + "</span>"));

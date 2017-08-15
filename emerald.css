@@ -401,3 +401,13 @@ div.note textarea {
   font-family: arial, sans-serif;
   padding: 8px;
 }
+
+span.curation {
+  background: #404040;
+  opacity: 0.5;
+  border-radius: 5px;
+  border: #202020;
+  z-axis: 10000;
+  padding: 10px;
+  color: #e0e0e0;
+}
