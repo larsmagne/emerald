@@ -987,7 +987,11 @@ function shareBuyList() {
     if (! code)
       return;
     var comic = comics[currentIndex(code)];
-    text += code + " (" + comic.publisher + ") " +
+    if (comic.original)
+      text += comic.original;
+    else
+      text += code;
+    text += " (" + comic.publisher + ") " +
       comic.name + "\n\n";
   });
   window.plugins.socialsharing.share(text);
