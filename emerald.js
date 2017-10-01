@@ -671,7 +671,11 @@ function exportBuys() {
     if (! code)
       return;
     var comic = comics[currentIndex(code)];
-    html += code + " (" + comic.publisher + ") " +
+    if (comic.original)
+      html += comic.original;
+    else
+      html += code;
+    html += " (" + comic.publisher + ") " +
       comic.name + "<br>";
   });
   colorbox(html);
