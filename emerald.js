@@ -1233,7 +1233,8 @@ function doSearch() {
     i = currentIndex(match[1]) + 1;
   for (var times = 0; times < 2; times++) {
     for (; i < comics.length; i++) {
-      if (comics[i].text.toLowerCase().search(search) > -1) {
+      if (comics[i].text.toLowerCase().search(search) > -1
+	  || comics[i].creators.toLowerCase().search(search) > -1) {
 	loadImageAndDisplay(comics[i]);
 	return;
       }
