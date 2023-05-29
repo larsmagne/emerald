@@ -289,7 +289,7 @@ function addNavigation() {
   $(document).keydown(function(e) {
     if (document.activeElement.nodeName == "SELECT" ||
 	document.activeElement.nodeName == "TEXTAREA" ||
-	document.activeElement.nodeName == "INPUT")
+	document.activeElement.id == "searchbox")
       return;
     switch(e.which) {
     case 37: // left
