@@ -37,7 +37,8 @@ function startUp() {
     window.history.pushState("emerald", "emerald", url);
   }
   $.ajax({
-    url: "http://goshenite.info/data/previews-" + emeraldDate + ".json",
+    url: location.protocol + "//goshenite.info/data/previews-" +
+      emeraldDate + ".json",
     dataType: "json",
     success: function(data) {
       removeSpinner(spinner);
@@ -1020,7 +1021,7 @@ function prepareStart() {
 function imgUrl(comic) {
   if (! comic || ! comic.img)
     return false;
-  return "http://goshenite.info/data/img/" + emeraldDate + "/" +
+  return location.protocol + "//goshenite.info/data/img/" + emeraldDate + "/" +
     comic.code + "-scale.jpg";
 }
 
