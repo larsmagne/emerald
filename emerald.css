@@ -89,6 +89,15 @@ td#export {
   cursor: pointer;
 }
 
+td#search {
+  text-align: center;
+}
+
+span#nextsearch {
+  font-weight: bold;
+  cursor: pointer;
+}
+
 td.first {
   background: #40a040 !important;
 }

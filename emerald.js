@@ -77,6 +77,7 @@ function startUp() {
       addPublishers();
       checkCategories();
       addMonths();
+      addSearch();
       //localStorage.setItem("buys-" + emeraldDate, "");
       //curateList();
       //listCurations();
@@ -287,7 +288,8 @@ function addNavigation() {
   $("#prevPublisher").bind("click", gotoPrevPublisher);
   $(document).keydown(function(e) {
     if (document.activeElement.nodeName == "SELECT" ||
-	document.activeElement.nodeName == "TEXTAREA")
+	document.activeElement.nodeName == "TEXTAREA" ||
+	document.activeElement.nodeName == "INPUT")
       return;
     switch(e.which) {
     case 37: // left
@@ -650,6 +652,11 @@ function colorbox(html, buttonText, callback) {
   box.innerHTML = "<div class='inner-box'>" + html + "</div><div class='close' id='close'><span>Close</span></div>" +
     (buttonText? "<div class='close' id='callback'><span>" + buttonText + "</span></div>": "");
   document.body.appendChild(box);
+  $(document).keyup(function(e) {
+    if (e.keyCode == 27) {
+      $(box).remove();
+    }
+  });
   if (callback)
     $("#callback").bind("click", function() {
       callback();
@@ -1021,7 +1028,7 @@ function prepareStart() {
 function imgUrl(comic) {
   if (! comic || ! comic.img)
     return false;
-  return location.protocol + "//goshenite.info/data/img/" + emeraldDate + "/" +
+  return "https://goshenite.info/data/img/" + emeraldDate + "/" +
     comic.code + "-scale.jpg";
 }
 
@@ -1200,4 +1207,38 @@ function addNote() {
     localStorage.setItem(id, $("#text-note").val());
     $("div.note").remove();
   });
+}
+
+function addSearch() {
+  $("#nextsearch").click(function() {
+    doSearch();
+  });
+  $('#searchbox').keypress(function (e) {
+    if (e.which == 13) {
+      doSearch();
+      return false;  
+    }
+  });   
+}
+
+function doSearch() {
+  var search = $("#searchbox").val().trim().toLowerCase();
+  if (search == "") {
+    colorbox("No search term given");
+    return;
+  }
+  var i = 0;
+  var match = window.location.href.match("code=(.*)");
+  if (match)
+    i = currentIndex(match[1]) + 1;
+  for (var times = 0; times < 2; times++) {
+    for (; i < comics.length; i++) {
+      if (comics[i].text.toLowerCase().search(search) > -1) {
+	loadImageAndDisplay(comics[i]);
+	return;
+      }
+    }
+    i = 0;
+  }
+  colorbox("No matches found");
 }
