@@ -1231,11 +1231,15 @@ function doSearch() {
   var match = window.location.href.match("code=(.*)");
   if (match)
     i = currentIndex(match[1]) + 1;
+  var start = i;
   for (var times = 0; times < 2; times++) {
     for (; i < comics.length; i++) {
       if (comics[i].text.toLowerCase().search(search) > -1
 	  || comics[i].creators.toLowerCase().search(search) > -1) {
-	loadImageAndDisplay(comics[i]);
+	if (i == start)
+	  colorbox("Only one match");
+	else
+	  loadImageAndDisplay(comics[i]);
 	return;
       }
     }
