@@ -1241,7 +1241,6 @@ function doSearch() {
     for (; i < comics.length; i++) {
       if (comics[i].text.toLowerCase().search(search) > -1
 	  || comics[i].creators.toLowerCase().search(search) > -1) {
-	colorbox("" + i + " is " + start);
 	if (i == start)
 	  colorbox("Only one match");
 	else
