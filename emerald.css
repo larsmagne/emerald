@@ -12,6 +12,10 @@ body {
 }
 div.event-lightbox {
   background: linear-gradient(to bottom, #f05050 0%, #903030 100%);
+  background-image: url("licht2-scaled.jpg");
+  background-position: center; /* Center the image */
+  background-repeat: no-repeat; /* Do not repeat the image */
+  background-size: cover; /* Resize the background image to cover the entire container */
   color: black;
 }
 div.inner-box {
@@ -303,6 +307,7 @@ td#text:hover:after {
   div.event-lightbox {
     padding: 0px;
     background: linear-gradient(to bottom, #f05050 0%, #903030 100%);
+    background-image: none;
     color: black;
   }
   div.navigation-bar {
