@@ -141,6 +141,7 @@ div.close {
   width: 100%;
   font-weight: bold;
   padding-top: 40px;
+  cursor: pointer;
 }
 div.close span {
   background: #c0c0c0;
