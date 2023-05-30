@@ -37,7 +37,10 @@ function startUp() {
     window.history.pushState("emerald", "emerald", url);
   }
   $.ajax({
-    url: location.protocol + "//goshenite.info/data/previews-" +
+    url: location.hostname == "localhost"?
+      location.protocol + "//localhost/emerald/data/previews-" +
+      emeraldDate + ".json":
+      location.protocol + "//goshenite.info/data/previews-" +
       emeraldDate + ".json",
     dataType: "json",
     success: function(data) {
