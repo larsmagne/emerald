@@ -91,6 +91,9 @@ function startUp() {
   $("#publisher").click(function() {
     toggleSpecialPublisher();
   });
+  $("#about").click(function() {
+    showAbout();
+  });
 }
 
 var firstTime = true;
@@ -1251,4 +1254,21 @@ function doSearch() {
     i = 0;
   }
   colorbox("No matches found");
+}
+
+function showAbout() {
+  colorbox("<h1>Goshenite</h1>" +
+	   "This is a web site that shows the comics available via the Diamond and Lunar comics distributors in the coming months (as well as in the past)." +
+	   "<p>You can use the mouse to click on navigation options in the right hand menu, but you can also use keyboard shortcuts to navigate faster." +
+	   "<ol>" +
+	   "<li>Use the Left key to go to the next comic, and the Right key to go to the previous comic." +
+	   "<li>The Down and Up work the same as Left and Right." +
+	   "<li>Use the PgDown key to go to the next publisher, and the PgUp key to go to the previous publisher." +
+	   "<li>If you see something you want to buy, hit the Enter key.  (This toggles, so if you don't want to buy after all, hit the Enter key again.)" +
+	   "</ol>" +
+	   "<p>After you're done, click on the Export button to get a list of the comics you've selected.  This is on a format that most comics shops should be able to use to order stuff for you." +
+	   "<p>You may be interested in some publishers more than others.  Click on the publisher name (in the upper left corner) to toggle whether you're interested or not.  If the publisher name is green, it's one of your favourites, and will then be sorted first in the publisher listing." +
+	   "<p>There are many filtering options available.  If you're only interested in first issues, for instance, then check the 'First issues' checkbox, and uncheck the rest.  The navigation commands will then skip past everything other than first issues." +
+	   "<p>For more information about this project, see <a href='https://lars.ingebrigtsen.no/2015/10/22/a-simpler-previews-interface/'>this blog post</a>."
+	  );
 }

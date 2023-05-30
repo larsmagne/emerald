@@ -31,6 +31,7 @@ table.main td {
 td#publisher {
   height: 40px;
   vertical-align: middle;
+  cursor: pointer;
 }
 td#title {
   height: 70px;
@@ -57,7 +58,6 @@ td#creators:hover:after {
   display: block;
   margin-bottom: 0px;
 }
-
 
 tr.misc {
   height: 40px;
@@ -147,6 +147,7 @@ input[type=checkbox] {
 td.about, td#curation, td#see-curation, td#note {
   text-align: center;
   font-weight: bold;
+  cursor: pointer;
 }
 a {
   color: black;
