@@ -1242,6 +1242,7 @@ function doSearch() {
     colorbox("No search term given");
     return;
   }
+  var words = search.split(/ +/);
   var i = 0;
   var start = 0;
   var match = window.location.href.match("code=(.*)");
@@ -1251,8 +1252,19 @@ function doSearch() {
   }
   for (var times = 0; times < 2; times++) {
     for (; i < comics.length; i++) {
-      if (comics[i].text.toLowerCase().search(search) > -1
-	  || comics[i].creators.toLowerCase().search(search) > -1) {
+      var string = (comics[i].text + comics[i].creators).toLowerCase()
+	  .trim().match(/\S+/g);
+      var matches = 0;
+      if (string) {
+	for (var x = 0; x < words.length; x++) {
+	  for (var y = 0; y < string.length; y++)
+	    if (words[x] == string[y]) {
+	      y = string.length;
+	      matches++;
+	    }
+	}
+      }
+      if (matches == words.length) {
 	if (i == start)
 	  colorbox("Only one match");
 	else
