@@ -291,6 +291,7 @@ td#text:hover:after {
   }
   body {
     margin: 0px;
+    background-image: none;
   }
   td#spacer {
     height: 100%;
