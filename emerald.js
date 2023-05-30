@@ -3,7 +3,7 @@ var comics = false;
 var emeraldDate = false;
 var emeraldDates = false;
 var categories = ["variants", "resolicitations", "relistings",
-		  "ones", "gns", "other"];
+		  "ones", "nonumber", "gns", "other"];
 var activeCategories = false;
 var phoneGap = false;
 var curationName = false;
@@ -504,11 +504,17 @@ function wanted(comic) {
       if ($.inArray("gns", activeCategories) != -1 &&
 	  comic.binding)
 	return true;
+      else if ($.inArray("nonumber", activeCategories) != -1 &&
+	       (!comic.issue || comic.issue.trim() == ""))
+	return true;
       else if ($.inArray("other", activeCategories) == -1)
 	return false;
     }
   }
   
+  if ($.inArray("nonumber", activeCategories) != -1 &&
+      (!comic.issue || comic.issue.trim() == ""))
+    return true;
   if ($.inArray("resolicitations", activeCategories) == -1 &&
       comic.resolicited)
     return false;
