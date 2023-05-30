@@ -178,6 +178,10 @@ td#logo {
   vertical-align: bottom;
 }
 
+td#logo > img {
+  cursor: pointer;
+}
+
 input[type=checkbox] {
   vertical-align: middle;
   position: relative;

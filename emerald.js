@@ -88,12 +88,9 @@ function startUp() {
       //curateList();
       //listCurations();
     }});
-  $("#publisher").click(function() {
-    toggleSpecialPublisher();
-  });
-  $("#about").click(function() {
-    showAbout();
-  });
+  $("#publisher").click(toggleSpecialPublisher);
+  $("#about").click(showAbout);
+  $("#logo > img").click(showAbout);
 }
 
 var firstTime = true;
