@@ -1231,14 +1231,17 @@ function doSearch() {
     return;
   }
   var i = 0;
+  var start = 0;
   var match = window.location.href.match("code=(.*)");
-  if (match)
+  if (match) {
     i = currentIndex(match[1]) + 1;
-  var start = i;
+    start = i - 1;
+  }
   for (var times = 0; times < 2; times++) {
     for (; i < comics.length; i++) {
       if (comics[i].text.toLowerCase().search(search) > -1
 	  || comics[i].creators.toLowerCase().search(search) > -1) {
+	colorbox("" + i + " is " + start);
 	if (i == start)
 	  colorbox("Only one match");
 	else
