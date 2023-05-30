@@ -1242,6 +1242,12 @@ function doSearch() {
     colorbox("No search term given");
     return;
   }
+  var phrase = false;
+  // This isn't quite correct, but whatevs.
+  if (search.search('"') != -1) {
+    phrase = true;
+    search = search.replace(/"/g, "");
+  } 
   var words = search.split(/ +/);
   var i = 0;
   var start = 0;
@@ -1256,12 +1262,26 @@ function doSearch() {
 	  .trim().match(/\S+/g);
       var matches = 0;
       if (string) {
+	var prev_x = -1;
+	var prev_y = -1;
 	for (var x = 0; x < words.length; x++) {
-	  for (var y = 0; y < string.length; y++)
-	    if (words[x] == string[y]) {
-	      y = string.length;
-	      matches++;
+	  for (var y = 0; y < string.length; y++) {
+	    if (!phrase) {
+	      if (words[x] == string[y]) {
+		y = string.length;
+		matches++;
+	      }
+	    } else {
+	      if (words[x] == string[y]
+		  && (prev_x == -1 || prev_x == x-1)
+		  && (prev_y == -1 || prev_y == y-1)) {
+		prev_x = x;
+		prev_y = y;
+		y = string.length;
+		matches++;
+	      }
 	    }
+	  }
 	}
       }
       if (matches == words.length) {
