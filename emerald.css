@@ -40,7 +40,25 @@ td#title {
 td#creators {
   width: 500px;
   height: 70px;
+  text-overflow: ellipsis;
+  overflow: hidden;
 }
+td#creators:hover {
+  text-overflow: inherit;
+  overflow: visible;
+}
+td#creators:after {
+  content: '';
+  display: block;
+  margin-bottom: -10000px;
+}
+td#creators:hover:after {
+  content: '';
+  display: block;
+  margin-bottom: 0px;
+}
+
+
 tr.misc {
   height: 40px;
   vertical-align: middle;
@@ -207,6 +225,12 @@ td#text:hover:after {
   td#creators {
     width: 100%;
     height: auto;
+    text-overflow: initial;
+    overflow: initial;
+  }
+  td#creators:after {
+    display: block;
+    margin-bottom: auto;
   }
   tr.misc {
     height: 40px;
