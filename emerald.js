@@ -417,12 +417,15 @@ function gotoPrevPublisher() {
   var len = comics.length;
   var i = currentIndex();
   var publisher = comics[i].publisher;
-  while (--i > 0) {
+  while (--i > -1) {
     if (wanted(comics[i]) && publisher != comics[i].publisher) {
       publisher = comics[i].publisher;
-      while (i-- > 0) {
-	if (wanted(comics[i]) && publisher != comics[i].publisher) {
-	  i++;
+      while (--i > -1) {
+	if (wanted(comics[i]) && (publisher != comics[i].publisher || i == 0)) {
+	  // If we're at the start, then we've found the publisher.
+	  // If not, we're one past the publisher, so increase.
+	  if (i != 0)
+	    i++;
 	  while (! wanted(comics[i]) && i < comics.length)
 	    i++;
 	  loadImageAndDisplay(comics[i]);
