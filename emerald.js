@@ -662,7 +662,7 @@ function colorbox(html, buttonText, callback) {
   box.style.width = window.innerWidth + "px";
   box.style.display = "block";
   box.className = "event-lightbox";
-  box.innerHTML = "<div class='inner-box'>" + html + "</div><div class='close' id='close'><span>Close</span></div>" +
+  box.innerHTML = "<div class='inner-box'><div class='inner-text'>" + html + "</div></div><div class='close' id='close'><span>Close</span></div>" +
     (buttonText? "<div class='close' id='callback'><span>" + buttonText + "</span></div>": "");
   document.body.appendChild(box);
   $(document).keyup(function(e) {

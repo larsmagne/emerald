@@ -21,8 +21,14 @@ div.event-lightbox {
 div.inner-box {
   margin: 10px;
   border-radius: 5px;
-  padding: 10px;
+  padding: 20px;
   background: linear-gradient(to bottom, #c0c0c0 0%, #909090 100%);
+  text-align: center;
+}
+div.inner-box .inner-text {
+  text-align: left;
+  display: inline-block;
+  max-width: 800px;
 }
 table.main {
   margin: auto;
