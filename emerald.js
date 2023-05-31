@@ -1224,17 +1224,20 @@ function addNote() {
 
 function addSearch() {
   $("#nextsearch").click(function() {
-    doSearch();
+    doSearch(false);
+  });
+  $("#prevsearch").click(function() {
+    doSearch(true);
   });
   $('#searchbox').keypress(function (e) {
     if (e.which == 13) {
-      doSearch();
+      doSearch(false);
       return false;  
     }
   });   
 }
 
-function doSearch() {
+function doSearch(backward) {
   var search = $("#searchbox").val().trim().toLowerCase();
   if (search == "") {
     colorbox("No search term given");
@@ -1247,15 +1250,20 @@ function doSearch() {
     search = search.replace(/"/g, "");
   } 
   var words = search.split(/ +/);
-  var i = 0;
-  var start = 0;
+  var i = backward? comics.length - 1: 0;
+  var start = i;
+  var end = backward? 0: comics.length - 1;
   var match = window.location.href.match("code=(.*)");
   if (match) {
-    i = currentIndex(match[1]) + 1;
-    start = i - 1;
+    i = currentIndex(match[1]);
+    start = i;
+    if (backward)
+      i--;
+    else
+      i++;
   }
   for (var times = 0; times < 2; times++) {
-    for (; i < comics.length; i++) {
+    for (; i != end; i = i + (backward? -1: 1)) {
       var string = (comics[i].text + comics[i].creators).toLowerCase()
 	  .trim().match(/\S+/g);
       var matches = 0;
@@ -1290,7 +1298,7 @@ function doSearch() {
 	return;
       }
     }
-    i = 0;
+    i = backward? comics.length - 1: 0;
   }
   colorbox("No matches found");
 }

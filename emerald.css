@@ -125,7 +125,7 @@ td#search {
   text-align: center;
 }
 
-span#nextsearch {
+span#nextsearch, span#prevsearch {
   font-weight: bold;
   cursor: pointer;
 }
