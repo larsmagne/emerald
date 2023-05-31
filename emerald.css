@@ -463,3 +463,7 @@ span.curation {
   padding: 10px;
   color: #e0e0e0;
 }
+
+span.match {
+  background: yellow;
+}

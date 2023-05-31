@@ -95,7 +95,7 @@ function startUp() {
 
 var firstTime = true;
 
-function display(comic, image, noPush, noVariants) {
+function display(comic, image, noPush, noVariants, callback) {
   current = comic.code;
   var url = window.location.href;
   if (url.match("code=(.*)"))
@@ -243,6 +243,9 @@ function display(comic, image, noPush, noVariants) {
   }
 
   $("#publishers").val(comic.publisher);
+
+  if (callback)
+    callback();
   
   setBuy();
   preload();
@@ -250,14 +253,14 @@ function display(comic, image, noPush, noVariants) {
 
 var lastImage = false;
 
-function loadImageAndDisplay(comic, noPush, noVariants) {
+function loadImageAndDisplay(comic, noPush, noVariants, callback) {
   if (! imgUrl(comic)) {
-    display(comic, false, noPush, noVariants);
+    display(comic, false, noPush, noVariants, callback);
     return;
   }
   var pre = preloadedImages[imgUrl(comic)];
   if (pre) {
-    display(comic, pre[1], noPush, noVariants);
+    display(comic, pre[1], noPush, noVariants, callback);
     return;
   }
   var image = document.createElement("img");
@@ -267,12 +270,12 @@ function loadImageAndDisplay(comic, noPush, noVariants) {
     // Don't do anything if the user has requested something else in
     // the meantime.
     if (image === lastImage)
-      display(comic, image, noPush, noVariants);
+      display(comic, image, noPush, noVariants, callback);
   };
   image.onerror = function() {
     removeSpinner(spinner);
     $(image).remove();
-    display(comic, false, noPush, noVariants);
+    display(comic, false, noPush, noVariants, callback);
   };
   image.src = imgUrl(comic);
   image.style.width = "480px";
@@ -1294,7 +1297,9 @@ function doSearch(backward) {
 	if (i == start)
 	  colorbox("Only one match");
 	else
-	  loadImageAndDisplay(comics[i]);
+	  loadImageAndDisplay(comics[i], false, false, function() {
+	    highlightWords(words, phrase);
+	  });
 	return;
       }
     }
@@ -1318,4 +1323,30 @@ function showAbout() {
 	   "<p>There are many filtering options available.  If you're only interested in first issues, for instance, then check the 'First issues' checkbox, and uncheck the rest.  The navigation commands will then skip past everything other than first issues." +
 	   "<p>For more information about this project, see <a href='https://lars.ingebrigtsen.no/2015/10/22/a-simpler-previews-interface/'>this blog post</a>."
 	  );
+}
+
+function highlightWords(words, phrase) {
+  highlightWordsNode("#text", words, phrase);
+  highlightWordsNode("#creators", words, phrase);
+}
+
+function highlightWordsNode(node, words, phrase) {
+  var text = $(node).text();
+  var string = text.trim().split(/\s+/g);
+  var nstring = "";
+  if (string) {
+    for (var i = 0; i < string.length; i++) {
+      var word = string[i];
+      var found = false;
+      for (var j = 0; j < words.length; j++) {
+	if (word.toLowerCase() == words[j])
+	  found = true;
+      }
+      if (found)
+	nstring += "<span class='match'>" + word + "</span> ";
+      else
+	nstring += word + " ";
+    }
+    $(node).html(nstring);
+  }
 }
