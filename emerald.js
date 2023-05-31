@@ -1267,8 +1267,8 @@ function doSearch(backward) {
   }
   for (var times = 0; times < 2; times++) {
     for (; i != end; i = i + (backward? -1: 1)) {
-      var string = (comics[i].text + comics[i].creators).toLowerCase()
-	  .trim().match(/\S+/g);
+      var string = (comics[i].text + comics[i].creators + comics[i].name)
+	  .toLowerCase().trim().match(/\S+/g);
       var matches = 0;
       if (string) {
 	var prev_x = -1;
@@ -1328,6 +1328,7 @@ function showAbout() {
 function highlightWords(words, phrase) {
   highlightWordsNode("#text", words, phrase);
   highlightWordsNode("#creators", words, phrase);
+  highlightWordsNode("#title", words, phrase);
 }
 
 function highlightWordsNode(node, words, phrase) {
