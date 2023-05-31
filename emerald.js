@@ -123,7 +123,12 @@ function display(comic, image, noPush, noVariants, callback) {
       if (image.height / ratio > cHeight) {
 	image.style.width = "";
 	image.style.height = cHeight;
-      }    
+	var cWidth = image.width / (image.height / cHeight) + 20;
+      } else {
+	cHeight = image.height / ratio;
+	cWidth = 480 + 20;
+      }
+      addImageDivs(cWidth, cHeight);
     } else {
       image.style.top = "5px";
       image.style.left = "5px";
@@ -1350,4 +1355,47 @@ function highlightWordsNode(node, words, phrase) {
     }
     $(node).html(nstring);
   }
+}
+
+function addImageDivs(width, height) {
+  console.log([width, height]);
+  $("#leftmapdiv").remove();
+  var div = document.createElement("div");
+  div.style.zIndex = 10000;
+  div.style.position = "absolute";
+  div.style.top = "20px";
+  div.style.left = "20px";
+  div.style.width = "100px";
+  div.style.height = "" + height + "px";
+  div.id = "leftmapdiv";
+
+  var image = document.createElement("img");
+  image.src = "left-arrow.svg";
+  image.style.width = "50px";
+  image.style.height = "50px";
+  image.id = "prevmapimg";
+  div.appendChild(image);
+  
+  $("#cover").append(div);
+  $("#leftmapdiv").click(gotoPrev);
+
+  $("#rightmapdiv").remove();
+  div = document.createElement("div");
+  div.style.zIndex = 10000;
+  div.style.position = "absolute";
+  div.style.top = "20px";
+  div.style.left = "" + (width - 100) + "px";
+  div.style.width = "100px";
+  div.style.height = "" + height + "px";
+  div.id = "rightmapdiv";
+
+  image = document.createElement("img");
+  image.src = "right-arrow.svg";
+  image.style.width = "50px";
+  image.style.height = "50px";
+  image.id = "rightmapimg";
+  div.appendChild(image);
+  
+  $("#cover").append(div);
+  $("#rightmapdiv").click(gotoNext);
 }

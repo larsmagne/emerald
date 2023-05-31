@@ -467,3 +467,27 @@ span.curation {
 span.match {
   background: yellow;
 }
+
+#leftmapdiv {
+  background-image: linear-gradient(to right, rgba(120,120,120,0.5), rgba(120,120,120,0));
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  opacity: 0;
+}
+
+#leftmapdiv:hover {
+  opacity: 1;
+}
+
+#rightmapdiv {
+  background-image: linear-gradient(to left, rgba(120,120,120,0.5), rgba(120,120,120,0));
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  opacity: 0;
+}
+
+#rightmapdiv:hover {
+  opacity: 1;
+}
