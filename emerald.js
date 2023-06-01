@@ -663,6 +663,7 @@ function checkCategories () {
 
 function colorbox(html, buttonText, callback) {
   var box = document.createElement("div");
+  box.style.zIndex = 100;
   box.style.position = "fixed";
   box.style.left = "0px";
   box.style.top = "0px";
@@ -850,7 +851,7 @@ function startSpinner() {
   };
   image.src = "ajax-loader.gif";
   image.style.display = "none";
-  image.style.zIndex = 10000;
+  image.style.zIndex = 100;
   image.style.position = "absolute";
   image.style.top = "30px";
   if (isMobile)
@@ -1360,7 +1361,7 @@ function highlightWordsNode(node, words, phrase) {
 function addImageDivs(width, height) {
   $("#leftmapdiv").remove();
   var div = document.createElement("div");
-  div.style.zIndex = 10000;
+  div.style.zIndex = 100;
   div.style.position = "absolute";
   div.style.top = "20px";
   div.style.left = "20px";
@@ -1380,7 +1381,7 @@ function addImageDivs(width, height) {
 
   $("#rightmapdiv").remove();
   div = document.createElement("div");
-  div.style.zIndex = 10000;
+  div.style.zIndex = 100;
   div.style.position = "absolute";
   div.style.top = "20px";
   div.style.left = "" + (width - 100) + "px";
