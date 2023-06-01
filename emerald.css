@@ -24,6 +24,7 @@ div.inner-box {
   padding: 20px;
   background: linear-gradient(to bottom, #c0c0c0 0%, #909090 100%);
   text-align: center;
+  min-height: 50px;
 }
 div.inner-box .inner-text {
   text-align: left;
@@ -492,4 +493,11 @@ span.match {
 
 #rightmapdiv:hover {
   opacity: 1;
+}
+
+#closeimg {
+  width: 50px;
+  height: 50px;
+  float: right;
+  cursor: pointer;
 }

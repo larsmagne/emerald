@@ -671,7 +671,7 @@ function colorbox(html, buttonText, callback) {
   box.style.width = window.innerWidth + "px";
   box.style.display = "block";
   box.className = "event-lightbox";
-  box.innerHTML = "<div class='inner-box'><div class='inner-text'>" + html + "</div></div><div class='close' id='close'><span>Close</span></div>" +
+  box.innerHTML = "<div class='inner-box'><img id='closeimg' src='close-circle.svg'><div class='inner-text'>" + html + "</div></div><div class='close' id='close'><span>Close</span></div>" +
     (buttonText? "<div class='close' id='callback'><span>" + buttonText + "</span></div>": "");
   document.body.appendChild(box);
   $(document).keyup(function(e) {
@@ -684,6 +684,9 @@ function colorbox(html, buttonText, callback) {
       callback();
     });
   $("#close").bind("click", function() {
+    $(box).remove();
+  });
+  $("#closeimg").bind("click", function() {
     $(box).remove();
   });
   return box;
