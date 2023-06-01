@@ -474,6 +474,7 @@ span.match {
   justify-content: center;
   align-items: center;
   opacity: 0;
+  cursor: pointer;
 }
 
 #leftmapdiv:hover {
@@ -481,11 +482,12 @@ span.match {
 }
 
 #rightmapdiv {
-  background-image: linear-gradient(to left, rgba(120,120,120,0.5), rgba(120,120,120,0));
+  background-image: linear-gradient(to right, rgba(120,120,120,0), rgba(120,120,120,0.5) 100px, rgba(120,120,120,0.0) 100px);
   display: flex;
   justify-content: center;
   align-items: center;
   opacity: 0;
+  cursor: pointer;
 }
 
 #rightmapdiv:hover {

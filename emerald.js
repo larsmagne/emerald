@@ -1358,7 +1358,6 @@ function highlightWordsNode(node, words, phrase) {
 }
 
 function addImageDivs(width, height) {
-  console.log([width, height]);
   $("#leftmapdiv").remove();
   var div = document.createElement("div");
   div.style.zIndex = 10000;
@@ -1385,7 +1384,7 @@ function addImageDivs(width, height) {
   div.style.position = "absolute";
   div.style.top = "20px";
   div.style.left = "" + (width - 100) + "px";
-  div.style.width = "100px";
+  div.style.width = "" + (100 + (500 - width)) + "px";
   div.style.height = "" + height + "px";
   div.id = "rightmapdiv";
 
